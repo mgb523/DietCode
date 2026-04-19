@@ -62,31 +62,29 @@
 
 ## Traceability
 
-*(Populated during roadmap creation)*
-
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| INP-01 | — | Pending |
-| INP-02 | — | Pending |
-| INP-03 | — | Pending |
-| DIET-01 | — | Pending |
-| DIET-02 | — | Pending |
-| DIET-03 | — | Pending |
-| TRANS-01 | — | Pending |
-| TRANS-02 | — | Pending |
-| TRANS-03 | — | Pending |
-| TRANS-04 | — | Pending |
-| TRANS-05 | — | Pending |
-| OUT-01 | — | Pending |
-| OUT-02 | — | Pending |
-| OUT-03 | — | Pending |
-| OUT-04 | — | Pending |
+| INP-01 | Phase 2 | Pending |
+| INP-02 | Phase 3 | Pending |
+| INP-03 | Phase 3 | Pending |
+| DIET-01 | Phase 2 | Pending |
+| DIET-02 | Phase 2 | Pending |
+| DIET-03 | Phase 2 | Pending |
+| TRANS-01 | Phase 2 | Pending |
+| TRANS-02 | Phase 1 | Pending |
+| TRANS-03 | Phase 3 | Pending |
+| TRANS-04 | Phase 3 | Pending |
+| TRANS-05 | Phase 4 | Pending |
+| OUT-01 | Phase 2 | Pending |
+| OUT-02 | Phase 4 | Pending |
+| OUT-03 | Phase 4 | Pending |
+| OUT-04 | Phase 4 | Pending |
 
 **Coverage:**
 - v1 requirements: 15 total
-- Mapped to phases: 0 (roadmap not yet created)
-- Unmapped: 15 ⚠️
+- Mapped to phases: 15
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-19*
-*Last updated: 2026-04-19 after initial definition*
+*Last updated: 2026-04-19 after roadmap creation*
