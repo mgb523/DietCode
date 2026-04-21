@@ -45,8 +45,14 @@ Plans:
   3. User can flag specific ingredient intolerances in the same constraint panel alongside the diet profile selector
   4. The LLM rewrites the recipe with substitutions appropriate to the selected constraints and returns structured `IngredientLine` data
   5. The transformed recipe appears in a clean, readable formatted view with ingredient quantities, units, and instructions clearly presented
-**Plans**: TBD
+**Plans**: 4 plans
 **UI hint**: yes
+
+Plans:
+- [ ] 02-01-PLAN.md — Backend services: RecipeIngestionService (text path), TransformationService (ChatClient LLM call), RecipeController (input validation + real dispatch)
+- [ ] 02-02-PLAN.md — Frontend constraint components: DietPillGroup toggle pills, TagInput free-text tag chip input
+- [ ] 02-03-PLAN.md — App.tsx form wiring and RecipeCard refinement: form layout, submit handler, form-collapse, bold quantity+unit
+- [ ] 02-04-PLAN.md — End-to-end verification checkpoint: smoke test + human confirm all 5 Phase 2 success criteria in browser
 
 ### Phase 3: Scale and Import
 **Goal**: A user can enter a target serving count and receive correctly scaled ingredient quantities (with sub-linear adjustments for leavening, salt, and spices), and can import a recipe by pasting a URL rather than copying the text manually.
@@ -81,6 +87,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-04-21 |
-| 2. Core Transformation | 0/TBD | Not started | - |
+| 2. Core Transformation | 0/4 | Not started | - |
 | 3. Scale and Import | 0/TBD | Not started | - |
 | 4. Output and Polish | 0/TBD | Not started | - |
