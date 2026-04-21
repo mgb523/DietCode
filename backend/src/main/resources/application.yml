@@ -1,0 +1,15 @@
+spring:
+  ai:
+    anthropic:
+      # TODO Phase 2: Set ANTHROPIC_API_KEY env var before running LLM calls
+      # TODO Phase 2: Verify exact model ID string against Anthropic API docs
+      # Candidate model IDs: claude-3-5-haiku-20241022 or claude-haiku-4-5
+      api-key: ${ANTHROPIC_API_KEY:placeholder-not-needed-in-phase-1}
+      chat:
+        options:
+          model: claude-3-5-haiku-20241022
+          temperature: 0.3
+          max-tokens: 2048
+
+server:
+  port: 8080
