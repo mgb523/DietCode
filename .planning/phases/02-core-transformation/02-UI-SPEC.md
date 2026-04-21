@@ -1,7 +1,8 @@
 ---
 phase: 2
 slug: core-transformation
-status: draft
+status: approved
+reviewed_at: 2026-04-21
 shadcn_initialized: true
 preset: "new-york / zinc / css-variables"
 created: 2026-04-21
@@ -42,7 +43,7 @@ Declared values (must be multiples of 4):
 | 3xl | 64px | Page-level spacing — not used in Phase 2 |
 
 Exceptions:
-- Touch target for pill toggle buttons: minimum 36px height (px-3 py-1.5 at 14px font satisfies this; verify tappability on mobile)
+- Touch target for pill toggle buttons: minimum 36px height (px-3 py-1 at 14px font satisfies this; verify tappability on mobile)
 - Tag remove button: 20px hit area minimum — use padding to expand beyond the × glyph
 
 ---
@@ -52,17 +53,16 @@ Exceptions:
 | Role | Size | Weight | Line Height |
 |------|------|--------|-------------|
 | Body | 14px | 400 (regular) | 1.5 |
-| Label | 14px | 500 (medium) | 1.4 |
-| Heading (section) | 16px | 600 (semibold) | 1.25 |
+| Heading (section) | 16px | 700 (bold) | 1.25 |
 | Display (page title, recipe name) | 24px | 700 (bold) | 1.2 |
 
 Notes:
-- "Body" covers ingredient lines, instruction steps, placeholder text, and inline error copy.
-- "Label" covers form field labels ("Your Recipe", "Dietary Needs", "Ingredients to omit or replace").
-- "Heading" covers RecipeCard section subheadings ("Ingredients", "Instructions", "Notes").
-- "Display" covers the page `<h1>DietCode</h1>` and `recipe.recipeName` inside RecipeCard.
-- Ingredient quantity+unit span: same 14px body size, weight 600 (semibold) per D-08. This is not a separate type role — it is a bold variant within the body line.
-- Source: shadcn New York defaults mapped to Tailwind utility classes: `text-sm` (14px), `text-base` (16px), `text-2xl` (24px); weights `font-normal`, `font-medium`, `font-semibold`, `font-bold`.
+- "Body" covers ingredient lines, instruction steps, placeholder text, inline error copy, form field labels, and RecipeCard section subheadings. All non-heading text uses weight 400.
+- "Heading" covers the page `<h1>DietCode</h1>` at 24px and RecipeCard section subheadings ("Ingredients", "Instructions", "Notes") at 16px — both use weight 700.
+- "Display" covers `recipe.recipeName` inside RecipeCard (24px, weight 700).
+- Label roles ("Your Recipe", "Diet profiles", "Ingredients to omit or replace") use 14px weight 400 — distinction from body text is communicated by context and position, not weight.
+- Ingredient quantity+unit span: same 14px body size, weight 700 (bold) per D-08. This is not a separate type role — it is a bold variant within the body line.
+- Source: shadcn New York defaults mapped to Tailwind utility classes: `text-sm` (14px), `text-base` (16px), `text-2xl` (24px); weights `font-normal` (400), `font-bold` (700).
 
 ---
 
@@ -92,7 +92,7 @@ Warning/notes callout (recipe warnings[]): `bg-amber-50 border-amber-200` (alrea
 
 | Component | File | Phase 2 Change |
 |-----------|------|----------------|
-| RecipeCard | `frontend/src/components/RecipeCard.tsx` | Bold quantity+unit per D-08: wrap `{ing.quantity} {ing.unit}` in `<span className="font-semibold">` |
+| RecipeCard | `frontend/src/components/RecipeCard.tsx` | Bold quantity+unit per D-08: wrap `{ing.quantity} {ing.unit}` in `<span className="font-bold">` |
 | shadcn Card | `frontend/src/components/ui/card.tsx` | No change |
 
 ### New components
@@ -117,12 +117,12 @@ Replace the Phase 1 `useEffect` auto-fetch stub with a form-driven `handleSubmit
   <h1> DietCode                          [text-2xl font-bold text-center mb-8]
   <form> [space-y-6]                     — visible when !formCollapsed
     <section> Your Recipe
-      <label> Your Recipe                [text-sm font-medium]
+      <label> Your Recipe                [text-sm font-normal]
       <textarea>                         [10 rows, resize-y, w-full]
     <section> Dietary Needs              [space-y-4]
-      <label> Diet profiles              [text-sm font-medium]
+      <label> Diet profiles              [text-sm font-normal]
       <DietPillGroup>                    [flex flex-wrap gap-2]
-      <label> Ingredients to omit…      [text-sm font-medium mt-4]
+      <label> Ingredients to omit…      [text-sm font-normal mt-4]
       <TagInput>
     <button type="submit">               [w-full]
       default: "Transform Recipe"
@@ -139,6 +139,10 @@ Replace the Phase 1 `useEffect` auto-fetch stub with a form-driven `handleSubmit
 - "Edit / start over" button: sets `setFormCollapsed(false)`, clears `recipe`, clears `error`. Does NOT reset `recipeText`, `selectedDiets`, or `intolerances` — user edits from where they left off.
 - Page does not scroll to top on collapse — the result card naturally appears below where the form was.
 
+### Focal point
+
+Primary visual focal point: the recipe textarea is the first interactive element and the primary eye-anchor on load; it occupies most of the vertical form space and receives focus-ring accent color on interaction. The "Transform Recipe" button is the secondary focal point — full-width, accent-colored background, positioned at the bottom of the form to anchor the submit action.
+
 ---
 
 ## Interaction Contract
@@ -152,6 +156,7 @@ Replace the Phase 1 `useEffect` auto-fetch stub with a form-driven `handleSubmit
 - All pills deselected is valid — recipe transforms with no diet constraint.
 - `type="button"` on each pill to prevent form submission on click.
 - Values sent to backend: `"KETO"`, `"VEGAN"`, `"GLUTEN_FREE"`, `"PALEO"`, `"WHOLE30"` (enum key names, not display labels).
+- Pill className: `flex items-center px-3 py-1 rounded-full text-sm border cursor-pointer` (14px, weight 400 via `text-sm font-normal`)
 
 ### TagInput (D-04)
 
@@ -161,8 +166,8 @@ Replace the Phase 1 `useEffect` auto-fetch stub with a form-driven `handleSubmit
 - Tag removed on: click × button on tag, or Backspace when input field is empty (removes last tag).
 - Duplicate tags silently ignored (no error).
 - Tags displayed as rounded pills inside the input container, flush with the text cursor.
-- Container: `flex flex-wrap gap-1.5 p-2 border rounded-md bg-background focus-within:ring-1 focus-within:ring-ring`
-- Tag chip: `flex items-center gap-1 px-2 py-0.5 bg-muted rounded-full text-sm`
+- Container: `flex flex-wrap gap-2 p-2 border rounded-md bg-background focus-within:ring-1 focus-within:ring-ring`
+- Tag chip: `flex items-center gap-1 px-2 py-1 bg-muted rounded-full text-sm`
 - Remove button: `text-muted-foreground hover:text-foreground`, aria-label `Remove {tag}`, renders `×` glyph.
 
 ### Submit button (D-06)
@@ -192,8 +197,8 @@ Replace the Phase 1 `useEffect` auto-fetch stub with a form-driven `handleSubmit
 
 ### RecipeCard ingredient lines (D-08)
 
-- Quantity + unit: `<span className="font-semibold">{ing.quantity} {ing.unit}</span>`
-- Ingredient + preparation: plain body weight, space-separated after the bold span.
+- Quantity + unit: `<span className="font-bold">{ing.quantity} {ing.unit}</span>`
+- Ingredient + preparation: plain body weight (`font-normal`), space-separated after the bold span.
 - Edge case — missing unit (e.g. "2 eggs"): bold span renders `"2 "` with trailing space; visually correct, no special handling.
 - Edge case — missing quantity (e.g. "Salt to taste"): bold span renders empty; acceptable.
 
@@ -257,6 +262,9 @@ No third-party shadcn registries declared. Registry vetting gate: not applicable
 | "Your Recipe" / "Diet profiles" section headings | Claude's Discretion (CONTEXT.md) — prescribed here |
 | Color 60/30/10 via CSS variables only | Design system default — shadcn convention |
 | Warning callout: amber-50/amber-200 | Existing RecipeCard.tsx — retain unchanged |
+| Typography: 2 weights (400, 700) | UI checker revision 2026-04-21 — dropped 500/600 |
+| Spacing: gap-2, py-1 (multiples of 4 only) | UI checker revision 2026-04-21 — replaced non-4 values |
+| Focal point declaration | UI checker revision 2026-04-21 — added to Layout Contract |
 
 ---
 
