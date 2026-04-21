@@ -20,7 +20,7 @@
 ### Transformation
 
 - [ ] **TRANS-01**: LLM rewrites the recipe with ingredient substitutions appropriate to the selected dietary constraints
-- [ ] **TRANS-02**: LLM returns structured output with per-ingredient data (`quantity`, `unit`, `ingredient`, `preparation`) and a `warnings[]` array for structural ingredient swaps (leavening, binders, gluten-forming flours)
+- [x] **TRANS-02**: LLM returns structured output with per-ingredient data (`quantity`, `unit`, `ingredient`, `preparation`) and a `warnings[]` array for structural ingredient swaps (leavening, binders, gluten-forming flours)
 - [ ] **TRANS-03**: User can set a target number of servings and receive scaled ingredient quantities
 - [ ] **TRANS-04**: Serving scaler applies sub-linear rules for leavening agents, salt, and strong spices (not naive linear multiplication)
 - [ ] **TRANS-05**: Each substituted ingredient has an annotation explaining why it was swapped, accessible via an info icon popover (not shown inline)
@@ -71,7 +71,7 @@
 | DIET-02 | Phase 2 | Pending |
 | DIET-03 | Phase 2 | Pending |
 | TRANS-01 | Phase 2 | Pending |
-| TRANS-02 | Phase 1 | Pending |
+| TRANS-02 | Phase 1 | Complete |
 | TRANS-03 | Phase 3 | Pending |
 | TRANS-04 | Phase 3 | Pending |
 | TRANS-05 | Phase 4 | Pending |

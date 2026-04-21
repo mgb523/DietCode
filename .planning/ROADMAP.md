@@ -12,7 +12,7 @@ DietCode ships in four phases. Phase 1 locks the data models and project scaffol
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Foundation** - Project scaffold, CORS, locked data models, LLM output schema defined
+- [x] **Phase 1: Foundation** - Project scaffold, CORS, locked data models, LLM output schema defined (completed 2026-04-21)
 - [ ] **Phase 2: Core Transformation** - Paste input, diet/intolerance controls, LLM rewrite, clean recipe display
 - [ ] **Phase 3: Scale and Import** - Serving scaler with sub-linear rules, URL scraping, auto-detect input routing
 - [ ] **Phase 4: Output and Polish** - Before/after comparison, substitution annotations, print PDF, Google Drive export
@@ -33,7 +33,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 - [x] 01-01-PLAN.md — Spring Boot backend scaffold: Gradle project, locked data models (D-01 through D-04), CORS config, service stubs, RecipeController stub
 - [x] 01-02-PLAN.md — React frontend scaffold: shadcn/ui Vite template, RecipeCard component, hardcoded stub payload render
-- [ ] 01-03-PLAN.md — Integration wiring: App.tsx fetches from backend, end-to-end CORS verification checkpoint
+- [x] 01-03-PLAN.md — Integration wiring: App.tsx fetches from backend, end-to-end CORS verification checkpoint
 
 ### Phase 2: Core Transformation
 **Goal**: A user can paste raw recipe text, select dietary constraints and intolerances in a single unified UI, submit the form, and receive a clean readable transformed recipe — the end-to-end core value loop working for the first time.
@@ -80,7 +80,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Foundation | 2/3 | In progress | - |
+| 1. Foundation | 3/3 | Complete | 2026-04-21 |
 | 2. Core Transformation | 0/TBD | Not started | - |
 | 3. Scale and Import | 0/TBD | Not started | - |
 | 4. Output and Polish | 0/TBD | Not started | - |
