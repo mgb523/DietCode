@@ -32,7 +32,8 @@ export function RecipeCard({ recipe }: Props) {
         <ul className="list-disc pl-5 space-y-1 mb-6">
           {recipe.ingredients.map((ing, i) => (
             <li key={i}>
-              {ing.quantity} {ing.unit} {ing.ingredient}
+              <span className="font-bold">{ing.quantity} {ing.unit}</span>{" "}
+              {ing.ingredient}
               {ing.preparation && `, ${ing.preparation}`}
             </li>
           ))}
