@@ -1,5 +1,8 @@
-import { useEffect, useState } from "react"
+import { useState } from "react"
 import { RecipeCard } from "@/components/RecipeCard"
+import { DietPillGroup } from "@/components/DietPillGroup"
+import { TagInput } from "@/components/TagInput"
+import { Loader2 } from "lucide-react"
 
 interface IngredientLine {
   quantity: string
@@ -20,42 +23,106 @@ interface TransformedRecipe {
 export default function App() {
   const [recipe, setRecipe] = useState<TransformedRecipe | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(false)
+  const [formCollapsed, setFormCollapsed] = useState(false)
 
-  useEffect(() => {
-    fetch("http://localhost:8080/api/recipe/transform", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        input: "phase-1-integration-check",
-        dietProfiles: [],
-        intolerances: []
+  const [recipeText, setRecipeText] = useState("")
+  const [selectedDiets, setSelectedDiets] = useState<string[]>([])
+  const [intolerances, setIntolerances] = useState<string[]>([])
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError(null)
+    try {
+      const res = await fetch("http://localhost:8080/api/recipe/transform", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          input: recipeText,
+          dietProfiles: selectedDiets,
+          intolerances
+        })
       })
-    })
-      .then((res) => {
-        if (!res.ok) throw new Error(`Backend returned ${res.status}`)
-        return res.json() as Promise<TransformedRecipe>
-      })
-      .then((data) => {
-        setRecipe(data)
-        setLoading(false)
-      })
-      .catch((err: Error) => {
-        setError(err.message)
-        setLoading(false)
-      })
-  }, [])
+      if (!res.ok) throw new Error(`Backend returned ${res.status}`)
+      const data = await res.json() as TransformedRecipe
+      setRecipe(data)
+      setFormCollapsed(true)
+    } catch {
+      setError("Transformation failed — please try again.")
+    } finally {
+      setLoading(false)
+    }
+  }
 
   return (
-    <main className="min-h-screen p-8 bg-background">
+    <main className="max-w-2xl mx-auto px-4 py-8">
       <h1 className="text-2xl font-bold text-center mb-8">DietCode</h1>
-      {loading && (
-        <p className="text-center text-muted-foreground">Loading recipe...</p>
+
+      {!formCollapsed && (
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <section>
+            <label className="block text-sm mb-2">Your Recipe</label>
+            <textarea
+              className="w-full resize-y border rounded-md p-3 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring"
+              rows={10}
+              placeholder="Paste your recipe here..."
+              value={recipeText}
+              onChange={e => setRecipeText(e.target.value)}
+              required
+            />
+          </section>
+
+          <section className="space-y-4">
+            <div>
+              <label className="block text-sm mb-2">Diet profiles</label>
+              <DietPillGroup selected={selectedDiets} onChange={setSelectedDiets} />
+            </div>
+            <div>
+              <label className="block text-sm mb-2">Ingredients to omit or replace</label>
+              <TagInput
+                tags={intolerances}
+                onChange={setIntolerances}
+                placeholder="peanuts, dairy, shellfish — press Enter to add"
+              />
+            </div>
+          </section>
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full py-2 px-4 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-60"
+          >
+            {loading ? (
+              <><Loader2 className="inline mr-2 h-4 w-4 animate-spin" />Transforming...</>
+            ) : (
+              "Transform Recipe"
+            )}
+          </button>
+
+          {error && (
+            <p className="text-sm text-destructive mt-2">⚠ {error}</p>
+          )}
+        </form>
       )}
-      {error && (
-        <p className="text-center text-destructive">Error: {error}. Is the backend running on port 8080?</p>
+
+      {formCollapsed && recipe && (
+        <div className="mt-8">
+          <button
+            type="button"
+            className="text-sm text-muted-foreground underline mb-4"
+            onClick={() => {
+              setFormCollapsed(false)
+              setRecipe(null)
+              setError(null)
+              // recipeText, selectedDiets, intolerances intentionally preserved (D-02)
+            }}
+          >
+            Edit / start over
+          </button>
+          <RecipeCard recipe={recipe} />
+        </div>
       )}
-      {recipe && <RecipeCard recipe={recipe} />}
     </main>
   )
 }
