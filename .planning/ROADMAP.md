@@ -51,7 +51,7 @@ Plans:
 Plans:
 - [x] 02-01-PLAN.md — Backend services: RecipeIngestionService (text path), TransformationService (ChatClient LLM call), RecipeController (input validation + real dispatch)
 - [x] 02-02-PLAN.md — Frontend constraint components: DietPillGroup toggle pills, TagInput free-text tag chip input
-- [ ] 02-03-PLAN.md — App.tsx form wiring and RecipeCard refinement: form layout, submit handler, form-collapse, bold quantity+unit
+- [x] 02-03-PLAN.md — App.tsx form wiring and RecipeCard refinement: form layout, submit handler, form-collapse, bold quantity+unit
 - [ ] 02-04-PLAN.md — End-to-end verification checkpoint: smoke test + human confirm all 5 Phase 2 success criteria in browser
 
 ### Phase 3: Scale and Import
@@ -87,6 +87,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-04-21 |
-| 2. Core Transformation | 2/4 | In progress | - |
+| 2. Core Transformation | 3/4 | In progress | - |
 | 3. Scale and Import | 0/TBD | Not started | - |
 | 4. Output and Polish | 0/TBD | Not started | - |
