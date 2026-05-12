@@ -7,7 +7,7 @@ spring:
       api-key: ${ANTHROPIC_API_KEY:placeholder-not-needed-in-phase-1}
       chat:
         options:
-          model: claude-3-5-haiku-20241022
+          model: claude-haiku-4-5-20251001
           temperature: 0.3
           max-tokens: 2048
 
