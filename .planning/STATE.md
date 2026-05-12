@@ -5,14 +5,14 @@
 See: .planning/PROJECT.md (updated 2026-04-19)
 
 **Core value:** Given any recipe, instantly produce a correctly adapted version — right diet, right portions, right substitutions — ready to cook from.
-**Current focus:** Phase 1 — Foundation
+**Current focus:** Phase 2 — Core Transformation
 
 ## Current Position
 
 Phase: 2 of 4 (Core Transformation)
-Plan: 0 of TBD in current phase
-Status: Phase 1 complete — ready to plan Phase 2
-Last activity: 2026-04-21 — Phase 1 complete (3/3 plans); all four roadmap success criteria verified in browser
+Plan: 0 of 4 in current phase
+Status: Ready to execute — Phase 2 planned (4 plans, 3 waves)
+Last activity: 2026-04-23 — Phase 2 planned (4 plans verified); ready to execute
 
 Progress: [██░░░░░░░░] 25%
 
@@ -46,6 +46,10 @@ Recent decisions affecting current work:
 - Pre-roadmap: Spring AI 1.1.4 + Anthropic Claude Haiku 3.5, temperature 0.3
 - Pre-roadmap: Google Drive OAuth2 kept in v1 scope (OUT-04); complexity accepted for personal use
 - Pre-roadmap: CORS configured on day one — `WebMvcConfigurer` allowing `http://localhost:5173`
+
+### Roadmap Evolution
+
+- Phase 5 added: UI Polish — general visual refinement: spacing, typography, responsiveness, overall feel and cohesion
 
 ### Pending Todos
 

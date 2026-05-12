@@ -16,6 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [ ] **Phase 2: Core Transformation** - Paste input, diet/intolerance controls, LLM rewrite, clean recipe display
 - [ ] **Phase 3: Scale and Import** - Serving scaler with sub-linear rules, URL scraping, auto-detect input routing
 - [ ] **Phase 4: Output and Polish** - Before/after comparison, substitution annotations, print PDF, Google Drive export
+- [ ] **Phase 5: UI Polish** - General visual refinement: spacing, typography, responsiveness, overall feel and cohesion
 
 ## Phase Details
 
@@ -79,10 +80,21 @@ Plans:
 **Plans**: TBD
 **UI hint**: yes
 
+### Phase 5: UI Polish
+**Goal**: The app feels polished and professional — consistent spacing, readable typography, responsive layout, and visual cohesion across all components and states.
+**Depends on**: Phase 4
+**Requirements**: TBD
+**Success Criteria** (what must be TRUE):
+  1. Layout is responsive and usable on mobile, tablet, and desktop
+  2. Typography, spacing, and color usage is consistent across all screens and states
+  3. Loading, error, and empty states are visually distinct and clear
+  4. The overall visual feel matches a professional consumer web app
+**Plans**: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 → 2 → 3 → 4
+Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
@@ -90,3 +102,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4
 | 2. Core Transformation | 3/4 | In progress | - |
 | 3. Scale and Import | 0/TBD | Not started | - |
 | 4. Output and Polish | 0/TBD | Not started | - |
+| 5. UI Polish | 0/TBD | Not started | - |
