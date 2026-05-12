@@ -14,6 +14,11 @@ const DIET_OPTIONS = [
     description: "No animal products of any kind — no meat, fish, dairy, eggs, or honey. Replaces with plant-based alternatives.",
   },
   {
+    value: "VEGETARIAN",
+    label: "Vegetarian",
+    description: "Ovo-lacto vegetarian: no meat or fish, but dairy and eggs are allowed. Replaces meat with plant proteins, legumes, or eggs.",
+  },
+  {
     value: "GLUTEN_FREE",
     label: "GF",
     description: "Eliminates wheat, barley, rye, and anything containing gluten. Essential for celiac disease and gluten sensitivity.",
