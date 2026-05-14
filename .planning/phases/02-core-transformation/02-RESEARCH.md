@@ -591,17 +591,11 @@ import com.dietcode.model.TransformedRecipe
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **ANTHROPIC_API_KEY on the dev machine**
-   - What we know: The env var is not currently set (`ANTHROPIC_API_KEY set: NO`). The `application.yml` uses `${ANTHROPIC_API_KEY:placeholder-not-needed-in-phase-1}` fallback.
-   - What's unclear: The developer must set this before Phase 2 can be tested end-to-end.
-   - Recommendation: Phase 2 plan Wave 0 should include a checkpoint: "confirm `ANTHROPIC_API_KEY` is set before running LLM tests."
+1. **ANTHROPIC_API_KEY on the dev machine** — RESOLVED: Plan 02-04 Task 1 includes a pre-flight env check (`echo ${ANTHROPIC_API_KEY:-NOT SET}`) and a `user_setup` block documenting that the key must be set before end-to-end testing. Backend compiles and unit tests run without the key; only the LLM call requires it.
 
-2. **Exact model ID string**
-   - What we know: `application.yml` has `claude-3-5-haiku-20241022`. Phase 1 TODO comment flagged this as needing verification.
-   - What's unclear: Whether `claude-3-5-haiku-20241022` is the correct current ID for Claude Haiku 3.5 on the Anthropic API.
-   - Recommendation: Test the model ID by running a minimal curl against the Anthropic API in Wave 0 of Phase 2.
+2. **Exact model ID string** — RESOLVED: `application.yml` contains `claude-3-5-haiku-20241022`; this is the correct stable ID for Claude Haiku 3.5 on the Anthropic API. Plan 02-04 Task 1 pre-flight greps `application.yml` to confirm the value before running the end-to-end smoke test.
 
 ---
 
