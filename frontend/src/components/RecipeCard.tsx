@@ -37,13 +37,26 @@ function isSubLinear(ingredient: string): boolean {
   return SUBLINEAR_KEYWORDS.some(kw => lower.includes(kw))
 }
 
+const UNICODE_FRACTIONS: Record<string, string> = {
+  '½': '1/2', '⅓': '1/3', '⅔': '2/3', '¼': '1/4', '¾': '3/4',
+  '⅕': '1/5', '⅖': '2/5', '⅗': '3/5', '⅘': '4/5',
+  '⅙': '1/6', '⅚': '5/6', '⅛': '1/8', '⅜': '3/8', '⅝': '5/8', '⅞': '7/8',
+}
+
+function normalizeQuantity(s: string): string {
+  // Replace unicode fraction chars, handling "1½" → "1 1/2"
+  return s.replace(/[½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞]/g, m => {
+    const prev = s[s.indexOf(m) - 1]
+    return (prev && /\d/.test(prev) ? ' ' : '') + UNICODE_FRACTIONS[m]
+  })
+}
+
 function scaleQuantity(quantityStr: string, scaleFactor: number): string {
   const trimmed = quantityStr.trim()
   if (!trimmed) return trimmed
   try {
-    return new Fraction(trimmed).mul(scaleFactor).toFraction(true)
+    return new Fraction(normalizeQuantity(trimmed)).mul(scaleFactor).toFraction(true)
   } catch {
-    // Fraction.js throws on "to taste", "a pinch", empty — return unchanged
     return quantityStr
   }
 }
