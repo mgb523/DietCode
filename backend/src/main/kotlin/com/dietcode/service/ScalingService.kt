@@ -65,12 +65,17 @@ class ScalingService {
     }
 
     internal fun formatQuantity(value: Double): String {
-        // Round to nearest 1/8 to avoid floating-point noise
-        val rounded = (value * 8.0).roundToLong() / 8.0
-        return if (rounded == rounded.toLong().toDouble()) {
-            rounded.toLong().toString()
-        } else {
-            "%.2f".format(rounded).trimEnd('0').trimEnd('.')
-        }
+        // Round to nearest 1/8
+        val eighths = (value * 8.0).roundToLong()
+        val whole = eighths / 8
+        val remainder = eighths % 8
+        if (remainder == 0L) return whole.toString()
+        // Simplify the fractional part (gcd of remainder and 8)
+        val g = gcd(remainder, 8L)
+        val num = remainder / g
+        val den = 8L / g
+        return if (whole == 0L) "$num/$den" else "$whole $num/$den"
     }
+
+    private fun gcd(a: Long, b: Long): Long = if (b == 0L) a else gcd(b, a % b)
 }
