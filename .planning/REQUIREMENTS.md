@@ -8,8 +8,8 @@
 ### Input
 
 - [ ] **INP-01**: User can paste raw recipe text into an input field
-- [ ] **INP-02**: User can import a recipe by entering a URL
-- [ ] **INP-03**: Input field auto-detects whether the input is a URL or pasted text and routes to the appropriate path automatically
+- [x] **INP-02**: User can import a recipe by entering a URL
+- [x] **INP-03**: Input field auto-detects whether the input is a URL or pasted text and routes to the appropriate path automatically
 
 ### Dietary Controls
 
@@ -21,8 +21,8 @@
 
 - [ ] **TRANS-01**: LLM rewrites the recipe with ingredient substitutions appropriate to the selected dietary constraints
 - [x] **TRANS-02**: LLM returns structured output with per-ingredient data (`quantity`, `unit`, `ingredient`, `preparation`) and a `warnings[]` array for structural ingredient swaps (leavening, binders, gluten-forming flours)
-- [ ] **TRANS-03**: User can set a target number of servings and receive scaled ingredient quantities
-- [ ] **TRANS-04**: Serving scaler applies sub-linear rules for leavening agents, salt, and strong spices (not naive linear multiplication)
+- [x] **TRANS-03**: User can set a target number of servings and receive scaled ingredient quantities
+- [x] **TRANS-04**: Serving scaler applies sub-linear rules for leavening agents, salt, and strong spices (not naive linear multiplication)
 - [ ] **TRANS-05**: Each substituted ingredient has an annotation explaining why it was swapped, accessible via an info icon popover (not shown inline)
 
 ### Output
@@ -65,15 +65,15 @@
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | INP-01 | Phase 2 | Pending |
-| INP-02 | Phase 3 | Pending |
-| INP-03 | Phase 3 | Pending |
+| INP-02 | Phase 3 | Complete |
+| INP-03 | Phase 3 | Complete |
 | DIET-01 | Phase 2 | Pending |
 | DIET-02 | Phase 2 | Pending |
 | DIET-03 | Phase 2 | Pending |
 | TRANS-01 | Phase 2 | Pending |
 | TRANS-02 | Phase 1 | Complete |
-| TRANS-03 | Phase 3 | Pending |
-| TRANS-04 | Phase 3 | Pending |
+| TRANS-03 | Phase 3 | Complete |
+| TRANS-04 | Phase 3 | Complete |
 | TRANS-05 | Phase 4 | Pending |
 | OUT-01 | Phase 2 | Pending |
 | OUT-02 | Phase 4 | Pending |

@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Project scaffold, CORS, locked data models, LLM output schema defined (completed 2026-04-21)
 - [ ] **Phase 2: Core Transformation** - Paste input, diet/intolerance controls, LLM rewrite, clean recipe display
-- [ ] **Phase 3: Scale and Import** - Serving scaler with sub-linear rules, URL scraping, auto-detect input routing
+- [x] **Phase 3: Scale and Import** - Serving scaler with sub-linear rules, URL scraping, auto-detect input routing (completed 2026-05-15)
 - [ ] **Phase 4: Output and Polish** - Before/after comparison, substitution annotations, print PDF, Google Drive export
 - [ ] **Phase 5: UI Polish** - General visual refinement: spacing, typography, responsiveness, overall feel and cohesion
 
@@ -100,6 +100,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-04-21 |
 | 2. Core Transformation | 3/4 | In progress | - |
-| 3. Scale and Import | 2/4 | In progress | - |
+| 3. Scale and Import | 3/2 | Complete   | 2026-05-15 |
 | 4. Output and Polish | 0/TBD | Not started | - |
 | 5. UI Polish | 0/TBD | Not started | - |
