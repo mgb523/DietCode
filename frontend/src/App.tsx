@@ -108,10 +108,12 @@ export default function App() {
             </div>
           </section>
 
-          <section>
-            <label className="block text-sm mb-2">Servings</label>
-            <ServingStepper value={targetServings} min={1} onChange={setTargetServings} />
-          </section>
+          {!isUrlInput && (
+            <section>
+              <label className="block text-sm mb-2">Servings</label>
+              <ServingStepper value={targetServings} min={1} onChange={setTargetServings} />
+            </section>
+          )}
 
           <button
             type="submit"
