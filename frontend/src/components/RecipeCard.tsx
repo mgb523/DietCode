@@ -48,6 +48,12 @@ function scaleQuantity(quantityStr: string, scaleFactor: number): string {
   }
 }
 
+const TO_TASTE_RE = /^(to taste|as needed|a? ?pinch|a? ?dash|season to taste|q\.?s\.?)$/i
+
+function isToTaste(ing: IngredientLine): boolean {
+  return TO_TASTE_RE.test(ing.quantity.trim())
+}
+
 function rescaleIngredients(
   ingredients: IngredientLine[],
   fromServings: number,
@@ -56,6 +62,7 @@ function rescaleIngredients(
   if (fromServings === toServings || fromServings <= 0 || toServings <= 0) return ingredients
   const linearFactor = toServings / fromServings
   return ingredients.map(ing => {
+    if (isToTaste(ing)) return ing
     const factor = isSubLinear(ing.ingredient) ? Math.sqrt(linearFactor) : linearFactor
     return { ...ing, quantity: scaleQuantity(ing.quantity, factor) }
   })
@@ -83,15 +90,28 @@ export function RecipeCard({ recipe }: Props) {
       </CardHeader>
       <CardContent>
         <h3 className="font-semibold mb-2">Ingredients</h3>
-        <ul className="list-disc pl-5 space-y-1 mb-6">
-          {displayedIngredients.map((ing, i) => (
+        <ul className="list-disc pl-5 space-y-1 mb-2">
+          {displayedIngredients.filter(ing => !isToTaste(ing)).map((ing, i) => (
             <li key={i}>
-              <span className="font-bold">{ing.quantity} {ing.unit}</span>{" "}
+              <span className="font-bold">{ing.quantity}{ing.unit ? ` ${ing.unit}` : ""}</span>{" "}
               {ing.ingredient}
               {ing.preparation && `, ${ing.preparation}`}
             </li>
           ))}
         </ul>
+        {displayedIngredients.some(isToTaste) && (
+          <div className="mb-6">
+            <p className="text-sm font-semibold text-muted-foreground mt-3 mb-1">To taste:</p>
+            <ul className="list-disc pl-5 space-y-1">
+              {displayedIngredients.filter(isToTaste).map((ing, i) => (
+                <li key={i}>
+                  {ing.ingredient}
+                  {ing.preparation && `, ${ing.preparation}`}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         <h3 className="font-semibold mb-2">Instructions</h3>
         <ol className="list-decimal pl-5 space-y-1">
