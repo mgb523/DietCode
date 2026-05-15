@@ -63,6 +63,7 @@ export default function App() {
       }
       const data = await res.json() as TransformedRecipe
       setRecipe(data)
+      setTargetServings(data.originalServings || null)
       setFormCollapsed(true)
     } catch {
       setError("Transformation failed — please try again.")
