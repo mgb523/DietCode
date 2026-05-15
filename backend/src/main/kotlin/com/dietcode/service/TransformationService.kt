@@ -49,6 +49,12 @@ class TransformationService(chatClientBuilder: ChatClient.Builder) {
             Use the warnings[] array to flag: any substitution that changes the dish significantly,
             any ingredient you were uncertain about, and any constraint you could not fully satisfy.
 
+            SCHEMA RULES for each ingredient line:
+            - quantity: numeric amount only (e.g. "3/4", "1 1/2", "2")
+            - unit: measurement unit only (e.g. "cup", "tsp", "strips") — never repeat this word in ingredient
+            - ingredient: the ingredient name only, without the unit word (e.g. "coconut bacon, chopped" NOT "coconut bacon strips, chopped" if unit is "strips")
+            - preparation: optional method (e.g. "chopped", "minced") — may be omitted if already in ingredient
+
             Return ONLY valid JSON matching the required schema — no markdown fences, no prose, no explanation.
         """.trimIndent()
 
