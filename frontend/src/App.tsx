@@ -87,7 +87,12 @@ export default function App() {
                 rows={10}
                 placeholder="Paste your recipe here, or enter a URL..."
                 value={recipeText}
-                onChange={e => setRecipeText(e.target.value)}
+                onChange={e => {
+                  const val = e.target.value
+                  setRecipeText(val)
+                  const isUrl = val.startsWith("http://") || val.startsWith("https://")
+                  setTargetServings(isUrl ? null : 2)
+                }}
                 required
               />
             </div>
