@@ -34,6 +34,15 @@ class TransformationService(chatClientBuilder: ChatClient.Builder) {
             - Gelatin is derived from animal bones — not vegan, not vegetarian
             When in doubt about an ingredient's compliance, replace it AND add a warning explaining why.
 
+            SUBSTITUTION OVER ELIMINATION — always prefer a good substitute over removing an ingredient:
+            - Never simply delete a meat or animal product; find the best contextual replacement.
+            - Match the role the ingredient plays: smoky/crispy (bacon) → smoked tempeh, coconut bacon,
+              or turkey bacon (if not vegetarian); hearty/umami (beef, lamb) → lentils, mushrooms,
+              jackfruit, or plant-based ground; delicate protein (chicken breast) → chickpeas, tofu,
+              or hearts of palm; seafood → hearts of palm, banana blossom, or tofu.
+            - When a constraint cannot be satisfied with a substitute, include a warning explaining why
+              and what was done instead.
+
             For ingredient exclusions, interpret each item broadly and forgive spelling errors
             (e.g. "peenut" means peanuts, "cow milk" means dairy).
 
