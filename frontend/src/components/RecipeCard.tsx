@@ -51,11 +51,29 @@ function normalizeQuantity(s: string): string {
   })
 }
 
+const COOKING_FRACTIONS = [0, 1/8, 1/4, 1/3, 3/8, 1/2, 5/8, 2/3, 3/4, 7/8, 1]
+
+function snapToFraction(value: number): string {
+  if (value <= 0) return "0"
+  const whole = Math.floor(value)
+  const remainder = value - whole
+  // Find nearest cooking fraction for the remainder
+  const nearest = COOKING_FRACTIONS.reduce((a, b) =>
+    Math.abs(b - remainder) < Math.abs(a - remainder) ? b : a
+  )
+  const snapped = whole + nearest
+  if (snapped === Math.round(snapped)) return String(Math.round(snapped))
+  // Format as fraction string
+  const frac = new Fraction(snapped).simplify(0.01)
+  return frac.toFraction(true)
+}
+
 function scaleQuantity(quantityStr: string, scaleFactor: number): string {
   const trimmed = quantityStr.trim()
   if (!trimmed) return trimmed
   try {
-    return new Fraction(normalizeQuantity(trimmed)).mul(scaleFactor).toFraction(true)
+    const parsed = new Fraction(normalizeQuantity(trimmed)).valueOf()
+    return snapToFraction(parsed * scaleFactor)
   } catch {
     return quantityStr
   }
