@@ -10,27 +10,27 @@ See: .planning/PROJECT.md (updated 2026-04-19)
 ## Current Position
 
 Phase: 3 of 5 (Scale and Import)
-Plan: 1 of 4 in current phase
-Status: Executing — Phase 3 plan 01 complete (serving scaler backend)
-Last activity: 2026-05-15 — 03-01 complete: ScalingService implemented with sub-linear math, models extended, controller wired
+Plan: 2 of 4 in current phase
+Status: Executing — Phase 3 plan 02 complete (URL scraping backend)
+Last activity: 2026-05-14 — 03-02 complete: jsoup URL scraping with three-level fallback, ScrapingException 422 handler
 
-Progress: [████░░░░░░] 40%
+Progress: [█████░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 1
-- Average duration: 2 min
-- Total execution time: 2 min
+- Total plans completed: 2
+- Average duration: 3.5 min
+- Total execution time: 7 min
 
 **By Phase:**
 
 | Phase | Plans | Total | Avg/Plan |
 |-------|-------|-------|----------|
-| 03-scale-and-import | 1 | 2 min | 2 min |
+| 03-scale-and-import | 2 | 7 min | 3.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 03-01 (2 min)
+- Last 5 plans: 03-01 (2 min), 03-02 (5 min)
 - Trend: —
 
 *Updated after each plan completion*
@@ -49,6 +49,9 @@ Recent decisions affecting current work:
 - 03-01: `factor^0.5` sub-linear curve for leavening/salt/spice (continuous, correct at all scale factors)
 - 03-01: `originalServings: Int = 0` default in TransformedRecipe so Jackson can deserialize LLM JSON without field
 - 03-01: RecipeController captures llmServings before ScalingService call; sets originalServings in both branches
+- 03-02: script.data() not .text() for JSON-LD DataNode content extraction (anti-pattern documented)
+- 03-02: ScrapingException -> 422 UNPROCESSABLE_ENTITY with {error: scraping_failed, message: ...}
+- 03-02: parseJsonLd() handles both inline @type:Recipe and Yoast SEO @graph array format
 
 ### Roadmap Evolution
 
@@ -75,6 +78,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-15
-Stopped at: Completed 03-01-PLAN.md — serving scaler backend
+Last session: 2026-05-14
+Stopped at: Completed 03-02-PLAN.md — URL scraping backend
 Resume file: None
