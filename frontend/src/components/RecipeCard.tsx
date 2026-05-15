@@ -83,7 +83,7 @@ export function RecipeCard({ recipe }: Props) {
           <ServingStepper
             value={currentServings}
             min={1}
-            onChange={setCurrentServings}
+            onChange={v => setCurrentServings(v ?? recipe.servings)}
             originalServings={recipe.originalServings !== recipe.servings ? recipe.originalServings : undefined}
           />
         </div>

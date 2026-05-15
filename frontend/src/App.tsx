@@ -32,7 +32,7 @@ export default function App() {
   const [recipeText, setRecipeText] = useState("")
   const [selectedDiets, setSelectedDiets] = useState<string[]>([])
   const [intolerances, setIntolerances] = useState<string[]>([])
-  const [targetServings, setTargetServings] = useState<number>(2)
+  const [targetServings, setTargetServings] = useState<number | null>(null)
 
   const isUrlInput = recipeText.startsWith("http://") || recipeText.startsWith("https://")
 
