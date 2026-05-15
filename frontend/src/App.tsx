@@ -3,6 +3,8 @@ import { RecipeCard } from "@/components/RecipeCard"
 import { DietPillGroup } from "@/components/DietPillGroup"
 import { TagInput } from "@/components/TagInput"
 import { Loader2 } from "lucide-react"
+import { UrlDetectionBadge } from "@/components/UrlDetectionBadge"
+import { ServingStepper } from "@/components/ServingStepper"
 
 interface IngredientLine {
   quantity: string
@@ -17,6 +19,7 @@ interface TransformedRecipe {
   ingredients: IngredientLine[]
   instructions: string[]
   servings: number
+  originalServings: number
   warnings: string[]
 }
 
@@ -29,6 +32,9 @@ export default function App() {
   const [recipeText, setRecipeText] = useState("")
   const [selectedDiets, setSelectedDiets] = useState<string[]>([])
   const [intolerances, setIntolerances] = useState<string[]>([])
+  const [targetServings, setTargetServings] = useState<number>(2)
+
+  const isUrlInput = recipeText.startsWith("http://") || recipeText.startsWith("https://")
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -41,10 +47,20 @@ export default function App() {
         body: JSON.stringify({
           input: recipeText,
           dietProfiles: selectedDiets,
-          intolerances
+          intolerances,
+          targetServings
         })
       })
-      if (!res.ok) throw new Error(`Backend returned ${res.status}`)
+      if (!res.ok) {
+        if (isUrlInput) {
+          const body = await res.json().catch(() => ({})) as Record<string, string>
+          if (body.error === "scraping_failed") {
+            setError("Couldn't import this URL. Open it, copy the recipe text, and paste it here.")
+            return
+          }
+        }
+        throw new Error(`Backend returned ${res.status}`)
+      }
       const data = await res.json() as TransformedRecipe
       setRecipe(data)
       setFormCollapsed(true)
@@ -63,14 +79,17 @@ export default function App() {
         <form onSubmit={handleSubmit} className="space-y-6">
           <section>
             <label className="block text-sm mb-2">Your Recipe</label>
-            <textarea
-              className="w-full resize-y border rounded-md p-3 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring"
-              rows={10}
-              placeholder="Paste your recipe here..."
-              value={recipeText}
-              onChange={e => setRecipeText(e.target.value)}
-              required
-            />
+            <div className="relative">
+              <UrlDetectionBadge visible={isUrlInput} />
+              <textarea
+                className="w-full resize-y border rounded-md p-3 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring"
+                rows={10}
+                placeholder="Paste your recipe here, or enter a URL..."
+                value={recipeText}
+                onChange={e => setRecipeText(e.target.value)}
+                required
+              />
+            </div>
           </section>
 
           <section className="space-y-4">
@@ -86,6 +105,11 @@ export default function App() {
                 placeholder="peanuts, dairy, shellfish — press Enter to add"
               />
             </div>
+          </section>
+
+          <section>
+            <label className="block text-sm mb-2">Servings</label>
+            <ServingStepper value={targetServings} min={1} onChange={setTargetServings} />
           </section>
 
           <button
