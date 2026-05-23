@@ -85,12 +85,21 @@ function isToTaste(ing: IngredientLine): boolean {
   return TO_TASTE_RE.test(ing.quantity.trim())
 }
 
+function shouldShowUnit(unit: string, ingredient: string): boolean {
+  if (!unit) return false
+  // Suppress unit when it echoes a word already in the ingredient name
+  // e.g. unit="tortillas" ingredient="corn or flour tortillas" → hide unit
+  const escaped = unit.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+  return !new RegExp(`\\b${escaped}\\b`, 'i').test(ingredient)
+}
+
 function rescaleIngredients(
   ingredients: IngredientLine[],
   fromServings: number,
   toServings: number
 ): IngredientLine[] {
-  if (fromServings === toServings || fromServings <= 0 || toServings <= 0) return ingredients
+  // Always run through scaleQuantity (factor=1 normalises "0.25" → "1/4" on initial display)
+  if (fromServings <= 0 || toServings <= 0) return ingredients
   const linearFactor = toServings / fromServings
   return ingredients.map(ing => {
     if (isToTaste(ing)) return ing
@@ -124,7 +133,7 @@ export function RecipeCard({ recipe }: Props) {
         <ul className="list-disc pl-5 space-y-1 mb-2">
           {displayedIngredients.filter(ing => !isToTaste(ing)).map((ing, i) => (
             <li key={i}>
-              <span className="font-bold">{ing.quantity}{ing.unit ? ` ${ing.unit}` : ""}</span>{" "}
+              <span className="font-bold">{ing.quantity}{shouldShowUnit(ing.unit, ing.ingredient) ? ` ${ing.unit}` : ""}</span>{" "}
               {ing.ingredient}
               {ing.preparation && `, ${ing.preparation}`}
             </li>

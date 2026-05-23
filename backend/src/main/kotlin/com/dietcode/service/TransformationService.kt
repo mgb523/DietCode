@@ -50,9 +50,13 @@ class TransformationService(chatClientBuilder: ChatClient.Builder) {
             any ingredient you were uncertain about, and any constraint you could not fully satisfy.
 
             SCHEMA RULES for each ingredient line:
-            - quantity: numeric amount only (e.g. "3/4", "1 1/2", "2")
-            - unit: measurement unit only (e.g. "cup", "tsp", "strips") — never repeat this word in ingredient
-            - ingredient: the ingredient name only, without the unit word (e.g. "coconut bacon, chopped" NOT "coconut bacon strips, chopped" if unit is "strips")
+            - quantity: numeric amount only — use fractions, not decimals (e.g. "3/4", "1 1/2", "2", never "0.25" or "1.5")
+            - unit: measurement unit only — ONLY real units of measure (cup, tsp, tbsp, oz, g, ml, strips, slices, cloves).
+              Leave unit EMPTY ("") for countable items that are named by the food itself (tortillas, eggs, sheets, pieces).
+              Never use the food's own name as the unit.
+            - ingredient: the ingredient name only — do NOT repeat any word already in unit
+              (e.g. if unit="strips" write ingredient="coconut bacon, chopped" NOT "coconut bacon strips, chopped")
+              (e.g. if unit="" write ingredient="corn or flour tortillas", NOT unit="tortillas" ingredient="corn or flour tortillas")
             - preparation: optional method (e.g. "chopped", "minced") — may be omitted if already in ingredient
 
             Return ONLY valid JSON matching the required schema — no markdown fences, no prose, no explanation.
