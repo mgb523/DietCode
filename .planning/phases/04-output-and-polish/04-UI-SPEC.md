@@ -55,12 +55,12 @@ All values use Tailwind utility classes. No custom font — inherits system font
 |------|------|--------|-------------|----------------|
 | Body | 14px | 400 (normal) | 1.5 | `text-sm` |
 | Label | 14px | 400 (normal) | 1.4 | `text-sm text-muted-foreground` |
-| Heading (section) | 16px | 600 (semibold) | 1.4 | `text-base font-semibold` |
+| Heading (section) | 16px | 700 (bold) | 1.4 | `text-base font-bold` |
 | Display (recipe name) | 24px | 700 (bold) | 1.2 | `text-2xl font-bold` |
 
 Source: Pre-populated from existing patterns in `RecipeCard.tsx` and `App.tsx`. No changes to existing type scale.
 
-Only two weights declared: normal (400) and semibold/bold (600/700).
+Only two weights declared: normal (400) and bold (700).
 
 ---
 
@@ -125,14 +125,14 @@ Tailwind pattern: `flex flex-col md:flex-row gap-6`
 
 ### Column Labels
 
-- Left column header: `"Original"` — `text-sm font-semibold text-muted-foreground uppercase tracking-wide`
+- Left column header: `"Original"` — `text-sm font-bold text-muted-foreground uppercase tracking-wide`
 - Right column header: `"Adapted"` — same style as "Original"
 
 ### Export Toolbar Placement
 
 Positioned between the "Edit / start over" link and the comparison cards. Full width of the `max-w-5xl` container.
 
-Toolbar content (left to right): `[Print]` `[Export to Drive]`
+Toolbar content (left to right): `[Print Recipe]` `[Export to Drive]`
 
 On mobile (below `md`): toolbar buttons stack or wrap via `flex flex-wrap gap-2`.
 
@@ -160,7 +160,7 @@ Trigger icon style: `text-muted-foreground hover:text-foreground cursor-pointer 
 
 ### Print Button
 
-- Label: `"Print"`
+- Label: `"Print Recipe"`
 - Icon: `Printer` (lucide-react) at `h-4 w-4 mr-2`
 - Style: primary — `bg-primary text-primary-foreground hover:bg-primary/90 rounded-md px-4 py-2 text-sm font-medium`
 - Behavior: calls `window.print()`
@@ -210,7 +210,7 @@ Elements to preserve when printing:
 
 Typography in print:
 - Body: `font-size: 12pt; line-height: 1.5`
-- Headings: `font-size: 14pt; font-weight: 600`
+- Headings: `font-size: 14pt; font-weight: 700`
 - Recipe name (display): `font-size: 18pt; font-weight: 700`
 - Page margins: `1cm` all sides via `@page`
 
@@ -223,13 +223,14 @@ Print class strategy: apply `print:hidden` Tailwind utility class to elements th
 | Element | Copy |
 |---------|------|
 | Primary CTA | "Transform Recipe" (unchanged from Phase 2) |
-| Print button | "Print" |
+| Print button | "Print Recipe" |
 | Drive export button | "Export to Drive" |
 | Drive connecting state | "Connecting..." |
 | Drive exporting state | "Exporting..." |
 | Drive error | "Drive export failed — use Print to save as PDF instead." |
 | Original column label | "Original" |
 | Adapted column label | "Adapted" |
+| Original column empty state | "Original recipe unavailable — paste it above to see the comparison." |
 | Substitution popover prefix | "Substituted for: {ingredient}" |
 | Drive filename pattern | "{recipeName} ({diet1}, {diet2}).pdf" or "{recipeName}.pdf" if no diets |
 | Scraping error (existing) | "Couldn't import this URL. Open it, copy the recipe text, and paste it here." (unchanged) |
@@ -268,7 +269,7 @@ No third-party registries. Registry vetting gate: not applicable.
 - [ ] Dimension 1 Copywriting: PASS
 - [ ] Dimension 2 Visuals: PASS
 - [ ] Dimension 3 Color: PASS
-- [ ] Dimension 4 Typography: PASS
+- [ ] Dimension 4 Typography: Two weights only — 400 (normal) and 700 (bold). Heading consolidated from semibold to bold.
 - [ ] Dimension 5 Spacing: PASS
 - [ ] Dimension 6 Registry Safety: PASS
 
