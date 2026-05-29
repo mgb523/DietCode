@@ -1,5 +1,6 @@
 package com.dietcode.controller
 
+import com.dietcode.model.IngredientLine
 import com.dietcode.model.TransformRequest
 import com.dietcode.model.TransformedRecipe
 import com.dietcode.service.RecipeIngestionService
@@ -28,9 +29,17 @@ class RecipeController(
         // Capture LLM-inferred serving count BEFORE ScalingService may overwrite recipe.servings
         val llmServings = transformed.servings
 
+        // Attach original recipe data from recipeDoc (per D-01, D-02)
+        val withOriginals = transformed.copy(
+            originalIngredients = recipeDoc.rawIngredients.map { raw ->
+                IngredientLine(quantity = "", unit = "", ingredient = raw, preparation = null, substitutionNote = null)
+            },
+            originalInstructions = recipeDoc.instructions.lines().filter { it.isNotBlank() }
+        )
+
         return request.targetServings
-            ?.takeIf { it > 0 && it != transformed.servings }
-            ?.let { scalingService.scale(transformed.copy(originalServings = llmServings), it) }
-            ?: transformed.copy(originalServings = llmServings)
+            ?.takeIf { it > 0 && it != withOriginals.servings }
+            ?.let { scalingService.scale(withOriginals.copy(originalServings = llmServings), it) }
+            ?: withOriginals.copy(originalServings = llmServings)
     }
 }

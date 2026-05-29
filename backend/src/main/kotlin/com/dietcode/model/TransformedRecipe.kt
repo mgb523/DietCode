@@ -6,5 +6,7 @@ data class TransformedRecipe(
     val instructions: List<String>,
     val servings: Int,          // = targetServings after backend scaling; = LLM-inferred if no scaling
     val originalServings: Int = 0,  // populated by RecipeController, not LLM; 0 = sentinel "not set"
-    val warnings: List<String>
+    val warnings: List<String>,
+    val originalIngredients: List<IngredientLine>? = null,
+    val originalInstructions: List<String>? = null,
 )
