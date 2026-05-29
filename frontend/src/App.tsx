@@ -5,6 +5,7 @@ import { TagInput } from "@/components/TagInput"
 import { Loader2 } from "lucide-react"
 import { UrlDetectionBadge } from "@/components/UrlDetectionBadge"
 import { ServingStepper } from "@/components/ServingStepper"
+import { ComparisonLayout } from "@/components/ComparisonLayout"
 
 interface IngredientLine {
   quantity: string
@@ -21,6 +22,8 @@ interface TransformedRecipe {
   servings: number
   originalServings: number
   warnings: string[]
+  originalIngredients?: IngredientLine[]
+  originalInstructions?: string[]
 }
 
 export default function App() {
@@ -73,86 +76,129 @@ export default function App() {
   }
 
   return (
-    <main className="max-w-2xl mx-auto px-4 py-8">
+    <main className="px-4 py-8">
       <h1 className="text-2xl font-bold text-center mb-8">DietCode</h1>
 
-      {!formCollapsed && (
-        <form onSubmit={handleSubmit} className="space-y-6">
-          <section>
-            <label className="block text-sm mb-2">Your Recipe</label>
-            <div className="relative">
-              <UrlDetectionBadge visible={isUrlInput} />
-              <textarea
-                className="w-full resize-y border rounded-md p-3 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring"
-                rows={10}
-                placeholder="Paste your recipe here, or enter a URL..."
-                value={recipeText}
-                onChange={e => {
-                  const val = e.target.value
-                  setRecipeText(val)
-                  const isUrl = val.startsWith("http://") || val.startsWith("https://")
-                  setTargetServings(isUrl ? null : 2)
-                }}
-                required
-              />
-            </div>
-          </section>
-
-          <section className="space-y-4">
-            <div>
-              <label className="block text-sm mb-2">Diet profiles</label>
-              <DietPillGroup selected={selectedDiets} onChange={setSelectedDiets} />
-            </div>
-            <div>
-              <label className="block text-sm mb-2">Ingredients to omit or replace</label>
-              <TagInput
-                tags={intolerances}
-                onChange={setIntolerances}
-                placeholder="peanuts, dairy, shellfish — press Enter to add"
-              />
-            </div>
-          </section>
-
-          {!isUrlInput && (
+      <div className="max-w-2xl mx-auto">
+        {!formCollapsed && (
+          <form onSubmit={handleSubmit} className="space-y-6">
             <section>
-              <label className="block text-sm mb-2">Servings</label>
-              <ServingStepper value={targetServings} min={1} onChange={setTargetServings} />
+              <label className="block text-sm mb-2">Your Recipe</label>
+              <div className="relative">
+                <UrlDetectionBadge visible={isUrlInput} />
+                <textarea
+                  className="w-full resize-y border rounded-md p-3 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring"
+                  rows={10}
+                  placeholder="Paste your recipe here, or enter a URL..."
+                  value={recipeText}
+                  onChange={e => {
+                    const val = e.target.value
+                    setRecipeText(val)
+                    const isUrl = val.startsWith("http://") || val.startsWith("https://")
+                    setTargetServings(isUrl ? null : 2)
+                  }}
+                  required
+                />
+              </div>
             </section>
-          )}
 
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full py-2 px-4 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-60"
-          >
-            {loading ? (
-              <><Loader2 className="inline mr-2 h-4 w-4 animate-spin" />Transforming...</>
-            ) : (
-              "Transform Recipe"
+            <section className="space-y-4">
+              <div>
+                <label className="block text-sm mb-2">Diet profiles</label>
+                <DietPillGroup selected={selectedDiets} onChange={setSelectedDiets} />
+              </div>
+              <div>
+                <label className="block text-sm mb-2">Ingredients to omit or replace</label>
+                <TagInput
+                  tags={intolerances}
+                  onChange={setIntolerances}
+                  placeholder="peanuts, dairy, shellfish — press Enter to add"
+                />
+              </div>
+            </section>
+
+            {!isUrlInput && (
+              <section>
+                <label className="block text-sm mb-2">Servings</label>
+                <ServingStepper value={targetServings} min={1} onChange={setTargetServings} />
+              </section>
             )}
-          </button>
 
-          {error && (
-            <p className="text-sm text-destructive mt-2">⚠ {error}</p>
-          )}
-        </form>
-      )}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full py-2 px-4 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-60"
+            >
+              {loading ? (
+                <><Loader2 className="inline mr-2 h-4 w-4 animate-spin" />Transforming...</>
+              ) : (
+                "Transform Recipe"
+              )}
+            </button>
+
+            {error && (
+              <p className="text-sm text-destructive mt-2">⚠ {error}</p>
+            )}
+          </form>
+        )}
+      </div>
 
       {formCollapsed && recipe && (
         <div className="mt-8">
-          <button
-            type="button"
-            className="text-sm text-muted-foreground underline mb-4"
-            onClick={() => {
-              setFormCollapsed(false)
-              setRecipe(null)
-              setError(null)
-              // recipeText, selectedDiets, intolerances intentionally preserved (D-02)
-            }}
-          >
-            Edit / start over
-          </button>
-          <RecipeCard recipe={recipe} />
+          <div className="max-w-5xl mx-auto">
+            <button
+              type="button"
+              className="text-sm text-muted-foreground underline mb-4 print:hidden"
+              onClick={() => {
+                setFormCollapsed(false)
+                setRecipe(null)
+                setError(null)
+                // recipeText, selectedDiets, intolerances intentionally preserved (D-02)
+              }}
+            >
+              Edit / start over
+            </button>
+          </div>
+          {/* ExportToolbar placeholder — added in Plan 03 */}
+          <ComparisonLayout>
+            <section aria-label="Original recipe" className="flex-1 min-w-0 print:hidden">
+              <p className="text-sm font-bold text-muted-foreground uppercase tracking-wide mb-2">
+                Original
+              </p>
+              {recipe.originalIngredients ? (
+                <div className="text-sm space-y-4">
+                  <div>
+                    <p className="font-semibold mb-1">Ingredients</p>
+                    <ul className="list-disc pl-5 space-y-1">
+                      {recipe.originalIngredients.map((ing, i) => (
+                        <li key={i}>{ing.ingredient}</li>
+                      ))}
+                    </ul>
+                  </div>
+                  {recipe.originalInstructions && recipe.originalInstructions.length > 0 && (
+                    <div>
+                      <p className="font-semibold mb-1">Instructions</p>
+                      <ol className="list-decimal pl-5 space-y-1">
+                        {recipe.originalInstructions.map((step, i) => (
+                          <li key={i}>{step}</li>
+                        ))}
+                      </ol>
+                    </div>
+                  )}
+                </div>
+              ) : (
+                <p className="text-sm text-muted-foreground">
+                  Original recipe unavailable — paste it above to see the comparison.
+                </p>
+              )}
+            </section>
+            <section aria-label="Adapted recipe" className="flex-1 min-w-0">
+              <p className="text-sm font-bold text-muted-foreground uppercase tracking-wide mb-2 print:hidden">
+                Adapted
+              </p>
+              <RecipeCard recipe={recipe} className="max-w-none" />
+            </section>
+          </ComparisonLayout>
         </div>
       )}
     </main>
