@@ -6,6 +6,7 @@ import { Loader2 } from "lucide-react"
 import { UrlDetectionBadge } from "@/components/UrlDetectionBadge"
 import { ServingStepper } from "@/components/ServingStepper"
 import { ComparisonLayout } from "@/components/ComparisonLayout"
+import { ExportToolbar } from "@/components/ExportToolbar"
 
 interface IngredientLine {
   quantity: string
@@ -159,7 +160,9 @@ export default function App() {
               Edit / start over
             </button>
           </div>
-          {/* ExportToolbar placeholder — added in Plan 03 */}
+          <div className="max-w-5xl mx-auto mb-6 print:hidden">
+            <ExportToolbar recipe={recipe} selectedDiets={selectedDiets} />
+          </div>
           <ComparisonLayout>
             <section aria-label="Original recipe" className="flex-1 min-w-0 print:hidden">
               <p className="text-sm font-bold text-muted-foreground uppercase tracking-wide mb-2">
