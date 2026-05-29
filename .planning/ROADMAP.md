@@ -81,7 +81,7 @@ Plans:
 **UI hint**: yes
 
 Plans:
-- [ ] 04-01-PLAN.md — Backend: extend TransformedRecipe with originalIngredients/originalInstructions, populate in RecipeController, add substitutionNote rule to LLM system prompt
+- [x] 04-01-PLAN.md — Backend: extend TransformedRecipe with originalIngredients/originalInstructions, populate in RecipeController, add substitutionNote rule to LLM system prompt
 - [ ] 04-02-PLAN.md — Frontend foundation: install shadcn popover, create ComparisonLayout, restructure App.tsx result section, RecipeCard className prop, print CSS
 - [ ] 04-03-PLAN.md — Frontend components: SubstitutionPopover, ExportToolbar (print + Drive OAuth), wire into App.tsx, document VITE_GOOGLE_CLIENT_ID in .env.example
 - [ ] 04-04-PLAN.md — Human verification checkpoint: confirm all 4 Phase 4 success criteria in browser
@@ -107,5 +107,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 3/3 | Complete | 2026-04-21 |
 | 2. Core Transformation | 3/4 | In progress | - |
 | 3. Scale and Import | 3/2 | Complete   | 2026-05-15 |
-| 4. Output and Polish | 0/4 | Not started | - |
+| 4. Output and Polish | 1/4 | In progress | - |
 | 5. UI Polish | 0/TBD | Not started | - |
