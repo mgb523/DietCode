@@ -2,6 +2,7 @@ import { useState } from "react"
 import Fraction from "fraction.js"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ServingStepper } from "@/components/ServingStepper"
+import { cn } from "@/lib/utils"
 
 interface IngredientLine {
   quantity: string
@@ -22,6 +23,7 @@ interface TransformedRecipe {
 
 interface Props {
   recipe: TransformedRecipe
+  className?: string
 }
 
 // Mirror backend ScalingService.SUBLINEAR_KEYWORDS (TRANS-04 requirement)
@@ -108,7 +110,7 @@ function rescaleIngredients(
   })
 }
 
-export function RecipeCard({ recipe }: Props) {
+export function RecipeCard({ recipe, className }: Props) {
   // currentServings starts at recipe.servings (already-scaled by backend at user's initial targetServings)
   const [currentServings, setCurrentServings] = useState(recipe.servings)
 
@@ -116,16 +118,21 @@ export function RecipeCard({ recipe }: Props) {
   const displayedIngredients = rescaleIngredients(recipe.ingredients, recipe.servings, currentServings)
 
   return (
-    <Card className="max-w-2xl mx-auto">
+    <Card className={cn("mx-auto", className)}>
       <CardHeader>
         <CardTitle>{recipe.recipeName}</CardTitle>
         <div className="flex items-center gap-3 mt-1">
-          <ServingStepper
-            value={currentServings}
-            min={1}
-            onChange={v => setCurrentServings(v ?? recipe.servings)}
-            originalServings={recipe.originalServings !== recipe.servings ? recipe.originalServings : undefined}
-          />
+          <span className="hidden print:block text-sm text-muted-foreground">
+            {currentServings} servings
+          </span>
+          <div className="print:hidden">
+            <ServingStepper
+              value={currentServings}
+              min={1}
+              onChange={v => setCurrentServings(v ?? recipe.servings)}
+              originalServings={recipe.originalServings !== recipe.servings ? recipe.originalServings : undefined}
+            />
+          </div>
         </div>
       </CardHeader>
       <CardContent>
