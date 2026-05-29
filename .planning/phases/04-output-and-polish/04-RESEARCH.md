@@ -423,7 +423,7 @@ Two-step: (1) user prints to PDF via OUT-03 (browser print dialog → Save as PD
 
 **Recommended decision for planner:** Upload as `text/html` with filename `{recipeName} ({tags}).html`. The file opens in Drive and renders correctly. Document this in the UI-SPEC as "saved to Drive as an HTML file that opens in Google Docs." This satisfies OUT-04's intent without html2canvas/jsPDF.
 
-[ASSUMED] — This interpretation of OUT-04 resolves the "PDF blob from browser" problem without adding dependencies. The planner should confirm with the user whether `.html` (renders in Drive) is acceptable, or whether jsPDF is authorized.
+[RESOLVED — user confirmed] Upload HTML content with `.pdf` extension (e.g. `Recipe.pdf`). Drive renders HTML files natively. No jsPDF needed. Matches D-08 exactly.
 
 ---
 
@@ -650,24 +650,20 @@ export function ExportToolbar({ recipe, selectedDiets }: Props) {
 
 | # | Claim | Section | Risk if Wrong |
 |---|-------|---------|---------------|
-| A1 | Drive export uploads HTML (`text/html`) rather than a true PDF blob — satisfying OUT-04's intent without pdf-generation dependencies | Critical Architecture Decision section | If user requires a PDF file in Drive (not HTML), jsPDF or equivalent must be added — medium effort |
+| A1 | Drive export uploads HTML (`text/html`) with `.pdf` extension — satisfying OUT-04 and D-08 without pdf-generation dependencies | Critical Architecture Decision section | **RESOLVED** — user confirmed: `.pdf` extension with `text/html` content. No jsPDF needed. |
 | A2 | Internet access is available during development and use | Environment Availability | Drive export silently fails without internet; acceptable since print is the fallback |
-| A3 | A Google Cloud project and OAuth2 client ID exist or will be created for development | Environment Availability | Without client ID, OUT-04 cannot be tested; Drive button should degrade gracefully |
+| A3 | A Google Cloud project and OAuth2 client ID exist or will be created for development | Environment Availability | **RESOLVED** — user confirmed: client ID already configured for `localhost:5173`. Drive button degrades gracefully if env var unset. |
 | A4 | `lucide-react@1.8.0` (project installed) includes `Info`, `Printer`, `Loader2` icons | Standard Stack | If icons missing, update lucide-react to 1.16.0 (latest registry version) |
 
 ---
 
-## Open Questions
+## Open Questions — RESOLVED
 
 1. **Drive export file format: HTML or PDF?**
-   - What we know: Browser cannot generate a PDF blob without html2canvas/jsPDF (adds deps). Drive renders HTML files natively.
-   - What's unclear: Whether the user considers an HTML file in Drive acceptable for "export as PDF" (OUT-04), or whether a true `.pdf` extension/MIME type is required.
-   - Recommendation: Default to HTML upload (zero new deps). The planner should note this as a decision point; if PDF is required, authorize jsPDF (~200KB) in the plan.
+   - **RESOLVED (user confirmed):** Upload HTML content (`text/html` MIME type) but name the file with `.pdf` extension — e.g. `Banana Bread (Vegan, GF).pdf`. Drive renders HTML files natively when opened. No jsPDF or additional dependencies needed. This satisfies D-08 exactly as locked.
 
 2. **Google Cloud project setup**
-   - What we know: OAuth2 requires a registered client ID with `https://accounts.google.com/gsi/client` script.
-   - What's unclear: Whether the project owner already has a Google Cloud project + OAuth2 client ID, or if this is net-new setup.
-   - Recommendation: Plan should include a "Wave 0" task to document the Google Cloud OAuth setup steps and create `frontend/.env.example` with `VITE_GOOGLE_CLIENT_ID=`.
+   - **RESOLVED (user confirmed):** Google Cloud project and OAuth2 client ID already exist and are configured for `localhost:5173`. No GCloud setup task required in the plan. Only `VITE_GOOGLE_CLIENT_ID` env var needs to be documented in `frontend/.env.example`.
 
 ---
 
