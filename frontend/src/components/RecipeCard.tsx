@@ -3,6 +3,7 @@ import Fraction from "fraction.js"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ServingStepper } from "@/components/ServingStepper"
 import { cn } from "@/lib/utils"
+import { SubstitutionPopover } from "@/components/SubstitutionPopover"
 
 interface IngredientLine {
   quantity: string
@@ -143,6 +144,9 @@ export function RecipeCard({ recipe, className }: Props) {
               <span className="font-bold">{ing.quantity}{shouldShowUnit(ing.unit, ing.ingredient) ? ` ${ing.unit}` : ""}</span>{" "}
               {ing.ingredient}
               {ing.preparation && `, ${ing.preparation}`}
+              {ing.substitutionNote && ing.substitutionNote.length > 0 && (
+                <SubstitutionPopover substitutionNote={ing.substitutionNote} />
+              )}
             </li>
           ))}
         </ul>
