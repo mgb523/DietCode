@@ -58,6 +58,10 @@ class TransformationService(chatClientBuilder: ChatClient.Builder) {
               (e.g. if unit="strips" write ingredient="coconut bacon, chopped" NOT "coconut bacon strips, chopped")
               (e.g. if unit="" write ingredient="corn or flour tortillas", NOT unit="tortillas" ingredient="corn or flour tortillas")
             - preparation: optional method (e.g. "chopped", "minced") — may be omitted if already in ingredient
+            - substitutionNote: if this ingredient was substituted or significantly changed from the
+              original, provide a brief explanation (1-2 sentences) of why the substitution was made.
+              Set to null (omit the field entirely) if the ingredient was NOT changed from the original.
+              Do NOT set substitutionNote to an empty string — use null for unchanged ingredients.
 
             Return ONLY valid JSON matching the required schema — no markdown fences, no prose, no explanation.
         """.trimIndent()
