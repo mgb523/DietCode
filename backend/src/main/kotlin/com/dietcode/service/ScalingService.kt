@@ -26,8 +26,8 @@ class ScalingService {
         val factor = targetServings.toDouble() / originalServings
 
         val scaledIngredients = recipe.ingredients.map { line ->
-            val qty = parseQuantity(line.quantity) ?: return@map line
-            val scaleFactor = if (isSubLinear(line.ingredient)) factor.pow(0.5) else factor
+            val qty = parseQuantity(line.quantity ?: "") ?: return@map line
+            val scaleFactor = if (isSubLinear(line.ingredient ?: "")) factor.pow(0.5) else factor
             line.copy(quantity = formatQuantity(qty * scaleFactor))
         }
 

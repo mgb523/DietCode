@@ -6,9 +6,9 @@ import { cn } from "@/lib/utils"
 import { SubstitutionPopover } from "@/components/SubstitutionPopover"
 
 interface IngredientLine {
-  quantity: string
-  unit: string
-  ingredient: string
+  quantity: string | null
+  unit: string | null
+  ingredient: string | null
   preparation: string | null
   substitutionNote: string | null
 }
@@ -85,15 +85,15 @@ function scaleQuantity(quantityStr: string, scaleFactor: number): string {
 const TO_TASTE_RE = /^(to taste|as needed|a? ?pinch|a? ?dash|season to taste|q\.?s\.?)$/i
 
 function isToTaste(ing: IngredientLine): boolean {
-  return TO_TASTE_RE.test(ing.quantity.trim())
+  return TO_TASTE_RE.test((ing.quantity ?? "").trim())
 }
 
-function shouldShowUnit(unit: string, ingredient: string): boolean {
+function shouldShowUnit(unit: string | null, ingredient: string | null): boolean {
   if (!unit) return false
   // Suppress unit when it echoes a word already in the ingredient name
   // e.g. unit="tortillas" ingredient="corn or flour tortillas" → hide unit
   const escaped = unit.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  return !new RegExp(`\\b${escaped}\\b`, 'i').test(ingredient)
+  return !new RegExp(`\\b${escaped}\\b`, 'i').test(ingredient ?? "")
 }
 
 function rescaleIngredients(
@@ -106,8 +106,8 @@ function rescaleIngredients(
   const linearFactor = toServings / fromServings
   return ingredients.map(ing => {
     if (isToTaste(ing)) return ing
-    const factor = isSubLinear(ing.ingredient) ? Math.sqrt(linearFactor) : linearFactor
-    return { ...ing, quantity: scaleQuantity(ing.quantity, factor) }
+    const factor = isSubLinear(ing.ingredient ?? "") ? Math.sqrt(linearFactor) : linearFactor
+    return { ...ing, quantity: ing.quantity != null ? scaleQuantity(ing.quantity, factor) : null }
   })
 }
 

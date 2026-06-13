@@ -45,7 +45,7 @@ class ScalingServiceTest {
     fun `scale applies sub-linear factor to salt at 2x`() {
         val r = recipe(ing("1", "salt"))
         val scaled = service.scale(r, 4)
-        val qty = service.parseQuantity(scaled.ingredients[0].quantity)!!
+        val qty = service.parseQuantity(scaled.ingredients[0].quantity ?: "")!!
         assertTrue(qty > 1.0 && qty < 2.0, "Sub-linear salt should be between 1 and 2, got $qty")
     }
 
@@ -53,7 +53,7 @@ class ScalingServiceTest {
     fun `scale applies sub-linear factor to baking powder`() {
         val r = recipe(ing("2", "baking powder"))
         val scaled = service.scale(r, 4)
-        val qty = service.parseQuantity(scaled.ingredients[0].quantity)!!
+        val qty = service.parseQuantity(scaled.ingredients[0].quantity ?: "")!!
         assertTrue(qty > 2.0 && qty < 4.0, "Sub-linear baking powder should be between 2 and 4, got $qty")
     }
 

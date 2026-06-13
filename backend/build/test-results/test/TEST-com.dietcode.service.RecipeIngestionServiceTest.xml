@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.dietcode.service.RecipeIngestionServiceTest" tests="4" skipped="0" failures="0" errors="0" timestamp="2026-04-23T22:13:50.087Z" hostname="mac.lan" time="0.003">
+<testsuite name="com.dietcode.service.RecipeIngestionServiceTest" tests="6" skipped="0" failures="0" errors="0" timestamp="2026-06-13T19:25:58.705Z" hostname="mac.lan" time="0.045">
   <properties/>
   <testcase name="ingest sets name and servings to null()" classname="com.dietcode.service.RecipeIngestionServiceTest" time="0.002"/>
-  <testcase name="ingest filters blank lines and trims whitespace()" classname="com.dietcode.service.RecipeIngestionServiceTest" time="0.0"/>
+  <testcase name="ingest throws ScrapingException for unreachable http URL()" classname="com.dietcode.service.RecipeIngestionServiceTest" time="0.039"/>
+  <testcase name="ingest filters blank lines and trims whitespace()" classname="com.dietcode.service.RecipeIngestionServiceTest" time="0.001"/>
   <testcase name="ingest splits lines into rawIngredients()" classname="com.dietcode.service.RecipeIngestionServiceTest" time="0.0"/>
+  <testcase name="ingest routes to text path when input does not start with http()" classname="com.dietcode.service.RecipeIngestionServiceTest" time="0.0"/>
   <testcase name="ingest passes full raw text as instructions()" classname="com.dietcode.service.RecipeIngestionServiceTest" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

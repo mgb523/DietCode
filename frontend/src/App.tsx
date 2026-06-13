@@ -18,9 +18,9 @@ const DIET_LABELS: Record<string, string> = {
 }
 
 interface IngredientLine {
-  quantity: string
-  unit: string
-  ingredient: string
+  quantity: string | null
+  unit: string | null
+  ingredient: string | null
   preparation: string | null
   substitutionNote: string | null
 }

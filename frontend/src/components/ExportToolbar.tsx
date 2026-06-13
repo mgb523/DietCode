@@ -3,9 +3,9 @@ import { Printer, Loader2 } from "lucide-react"
 import { cn } from "@/lib/utils"
 
 interface IngredientLine {
-  quantity: string
-  unit: string
-  ingredient: string
+  quantity: string | null
+  unit: string | null
+  ingredient: string | null
   preparation: string | null
   substitutionNote: string | null
 }
