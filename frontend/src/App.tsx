@@ -8,6 +8,15 @@ import { ServingStepper } from "@/components/ServingStepper"
 import { ComparisonLayout } from "@/components/ComparisonLayout"
 import { ExportToolbar } from "@/components/ExportToolbar"
 
+const DIET_LABELS: Record<string, string> = {
+  KETO: "Keto",
+  VEGAN: "Vegan",
+  VEGETARIAN: "Vegetarian",
+  GLUTEN_FREE: "Gluten-free",
+  PALEO: "Paleo",
+  WHOLE30: "Whole30",
+}
+
 interface IngredientLine {
   quantity: string
   unit: string
@@ -168,37 +177,57 @@ export default function App() {
               <p className="text-sm font-bold text-muted-foreground uppercase tracking-wide mb-2">
                 Original
               </p>
-              {recipe.originalIngredients ? (
-                <div className="text-sm space-y-4">
-                  <div>
-                    <p className="font-semibold mb-1">Ingredients</p>
-                    <ul className="list-disc pl-5 space-y-1">
-                      {recipe.originalIngredients.map((ing, i) => (
-                        <li key={i}>{ing.ingredient}</li>
-                      ))}
-                    </ul>
-                  </div>
-                  {recipe.originalInstructions && recipe.originalInstructions.length > 0 && (
+              {isUrlInput ? (
+                // URL import: show structured data scraped from the page
+                recipe.originalIngredients && recipe.originalIngredients.length > 0 ? (
+                  <div className="text-sm space-y-4">
                     <div>
-                      <p className="font-semibold mb-1">Instructions</p>
-                      <ol className="list-decimal pl-5 space-y-1">
-                        {recipe.originalInstructions.map((step, i) => (
-                          <li key={i}>{step}</li>
+                      <p className="font-semibold mb-1">Ingredients</p>
+                      <ul className="list-disc pl-5 space-y-1">
+                        {recipe.originalIngredients.map((ing, i) => (
+                          <li key={i}>{ing.ingredient}</li>
                         ))}
-                      </ol>
+                      </ul>
                     </div>
-                  )}
-                </div>
+                    {recipe.originalInstructions && recipe.originalInstructions.length > 0 && (
+                      <div>
+                        <p className="font-semibold mb-1">Instructions</p>
+                        <ol className="list-decimal pl-5 space-y-1">
+                          {recipe.originalInstructions.map((step, i) => (
+                            <li key={i}>{step}</li>
+                          ))}
+                        </ol>
+                      </div>
+                    )}
+                  </div>
+                ) : (
+                  <p className="text-sm text-muted-foreground">
+                    Original recipe unavailable.
+                  </p>
+                )
               ) : (
-                <p className="text-sm text-muted-foreground">
-                  Original recipe unavailable — paste it above to see the comparison.
-                </p>
+                // Text paste: show exactly what was pasted — no parsing, always accurate
+                <pre className="text-sm whitespace-pre-wrap font-sans leading-relaxed">{recipeText}</pre>
               )}
             </section>
             <section aria-label="Adapted recipe" className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-muted-foreground uppercase tracking-wide mb-2 print:hidden">
+              <p className="text-sm font-bold text-muted-foreground uppercase tracking-wide mb-1 print:hidden">
                 Adapted
               </p>
+              {(selectedDiets.length > 0 || intolerances.length > 0) && (
+                <div className="flex flex-wrap gap-1.5 mb-3">
+                  {selectedDiets.map(d => (
+                    <span key={d} className="px-2 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-medium">
+                      {DIET_LABELS[d] ?? d.toLowerCase().replace(/_/g, " ")}
+                    </span>
+                  ))}
+                  {intolerances.map(ing => (
+                    <span key={ing} className="px-2 py-0.5 rounded-full bg-muted text-muted-foreground text-xs font-medium border">
+                      no {ing}
+                    </span>
+                  ))}
+                </div>
+              )}
               <RecipeCard recipe={recipe} className="max-w-none" />
             </section>
           </ComparisonLayout>
