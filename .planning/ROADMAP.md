@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Project scaffold, CORS, locked data models, LLM output schema defined (completed 2026-04-21)
 - [ ] **Phase 2: Core Transformation** - Paste input, diet/intolerance controls, LLM rewrite, clean recipe display
 - [x] **Phase 3: Scale and Import** - Serving scaler with sub-linear rules, URL scraping, auto-detect input routing (completed 2026-05-15)
-- [ ] **Phase 4: Output and Polish** - Before/after comparison, substitution annotations, print PDF, Google Drive export
+- [x] **Phase 4: Output and Polish** - Before/after comparison, substitution annotations, print PDF, Google Drive export (completed 2026-06-14)
 - [ ] **Phase 5: UI Polish** - General visual refinement: spacing, typography, responsiveness, overall feel and cohesion
 
 ## Phase Details
@@ -84,7 +84,7 @@ Plans:
 - [x] 04-01-PLAN.md — Backend: extend TransformedRecipe with originalIngredients/originalInstructions, populate in RecipeController, add substitutionNote rule to LLM system prompt
 - [x] 04-02-PLAN.md — Frontend foundation: install shadcn popover, create ComparisonLayout, restructure App.tsx result section, RecipeCard className prop, print CSS
 - [x] 04-03-PLAN.md — Frontend components: SubstitutionPopover, ExportToolbar (print + Drive OAuth), wire into App.tsx, document VITE_GOOGLE_CLIENT_ID in .env.example
-- [ ] 04-04-PLAN.md — Human verification checkpoint: confirm all 4 Phase 4 success criteria in browser
+- [x] 04-04-PLAN.md — Human verification checkpoint: confirm all 4 Phase 4 success criteria in browser
 
 ### Phase 5: UI Polish
 **Goal**: The app feels polished and professional — consistent spacing, readable typography, responsive layout, and visual cohesion across all components and states.
@@ -107,5 +107,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 3/3 | Complete | 2026-04-21 |
 | 2. Core Transformation | 3/4 | In progress | - |
 | 3. Scale and Import | 3/2 | Complete   | 2026-05-15 |
-| 4. Output and Polish | 3/4 | In progress | - |
+| 4. Output and Polish | 4/4 | Complete | 2026-06-14 |
 | 5. UI Polish | 0/TBD | Not started | - |
