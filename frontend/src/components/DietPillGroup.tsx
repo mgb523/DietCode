@@ -40,13 +40,18 @@ interface Props {
   onChange: (selected: string[]) => void
 }
 
+const MUTUALLY_EXCLUSIVE = new Set(["VEGAN", "VEGETARIAN"])
+
 export function DietPillGroup({ selected, onChange }: Props) {
   const toggle = (value: string) => {
-    onChange(
-      selected.includes(value)
-        ? selected.filter(v => v !== value)
-        : [...selected, value]
-    )
+    if (selected.includes(value)) {
+      onChange(selected.filter(v => v !== value))
+    } else if (MUTUALLY_EXCLUSIVE.has(value)) {
+      // Selecting vegan or vegetarian deselects the other
+      onChange([...selected.filter(v => !MUTUALLY_EXCLUSIVE.has(v)), value])
+    } else {
+      onChange([...selected, value])
+    }
   }
 
   return (

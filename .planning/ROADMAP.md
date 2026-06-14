@@ -14,7 +14,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 
 - [x] **Phase 1: Foundation** - Project scaffold, CORS, locked data models, LLM output schema defined (completed 2026-04-21)
 - [ ] **Phase 2: Core Transformation** - Paste input, diet/intolerance controls, LLM rewrite, clean recipe display
-- [ ] **Phase 3: Scale and Import** - Serving scaler with sub-linear rules, URL scraping, auto-detect input routing
+- [x] **Phase 3: Scale and Import** - Serving scaler with sub-linear rules, URL scraping, auto-detect input routing (completed 2026-05-15)
 - [ ] **Phase 4: Output and Polish** - Before/after comparison, substitution annotations, print PDF, Google Drive export
 - [ ] **Phase 5: UI Polish** - General visual refinement: spacing, typography, responsiveness, overall feel and cohesion
 
@@ -69,16 +69,22 @@ Plans:
 **UI hint**: yes
 
 ### Phase 4: Output and Polish
-**Goal**: A user can compare the original recipe against the adapted version side by side, inspect the reasoning behind each substitution via popovers, and export the final recipe either via the browser print dialog or directly to Google Drive as a PDF.
+**Goal**: A user can compare the original recipe against the adapted version side by side, inspect the reasoning behind each substitution via popovers, and export the final recipe either via the browser print dialog or directly to Google Drive as an HTML file.
 **Depends on**: Phase 3
 **Requirements**: TRANS-05, OUT-02, OUT-03, OUT-04
 **Success Criteria** (what must be TRUE):
   1. User can view the original recipe and the adapted recipe displayed side by side in a before/after comparison layout
   2. Each substituted ingredient shows an info icon; clicking it opens a popover explaining why the ingredient was swapped — not shown inline
   3. User can trigger the browser print dialog and the recipe prints cleanly (no nav, no sidebars, readable typography) and can be saved as a PDF via "Save as PDF"
-  4. User can connect to Google Drive via OAuth2, and the transformed recipe is exported as a PDF directly to their Drive
-**Plans**: TBD
+  4. User can connect to Google Drive via OAuth2, and the transformed recipe is exported as an HTML file directly to their Drive
+**Plans**: 4 plans
 **UI hint**: yes
+
+Plans:
+- [x] 04-01-PLAN.md — Backend: extend TransformedRecipe with originalIngredients/originalInstructions, populate in RecipeController, add substitutionNote rule to LLM system prompt
+- [x] 04-02-PLAN.md — Frontend foundation: install shadcn popover, create ComparisonLayout, restructure App.tsx result section, RecipeCard className prop, print CSS
+- [x] 04-03-PLAN.md — Frontend components: SubstitutionPopover, ExportToolbar (print + Drive OAuth), wire into App.tsx, document VITE_GOOGLE_CLIENT_ID in .env.example
+- [ ] 04-04-PLAN.md — Human verification checkpoint: confirm all 4 Phase 4 success criteria in browser
 
 ### Phase 5: UI Polish
 **Goal**: The app feels polished and professional — consistent spacing, readable typography, responsive layout, and visual cohesion across all components and states.
@@ -100,6 +106,6 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 |-------|----------------|--------|-----------|
 | 1. Foundation | 3/3 | Complete | 2026-04-21 |
 | 2. Core Transformation | 3/4 | In progress | - |
-| 3. Scale and Import | 0/TBD | Not started | - |
-| 4. Output and Polish | 0/TBD | Not started | - |
+| 3. Scale and Import | 3/2 | Complete   | 2026-05-15 |
+| 4. Output and Polish | 3/4 | In progress | - |
 | 5. UI Polish | 0/TBD | Not started | - |

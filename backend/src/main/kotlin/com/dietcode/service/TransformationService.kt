@@ -34,11 +34,34 @@ class TransformationService(chatClientBuilder: ChatClient.Builder) {
             - Gelatin is derived from animal bones — not vegan, not vegetarian
             When in doubt about an ingredient's compliance, replace it AND add a warning explaining why.
 
+            SUBSTITUTION OVER ELIMINATION — always prefer a good substitute over removing an ingredient:
+            - Never simply delete a meat or animal product; find the best contextual replacement.
+            - Match the role the ingredient plays: smoky/crispy (bacon) → smoked tempeh, coconut bacon,
+              or turkey bacon (if not vegetarian); hearty/umami (beef, lamb) → lentils, mushrooms,
+              jackfruit, or plant-based ground; delicate protein (chicken breast) → chickpeas, tofu,
+              or hearts of palm; seafood → hearts of palm, banana blossom, or tofu.
+            - When a constraint cannot be satisfied with a substitute, include a warning explaining why
+              and what was done instead.
+
             For ingredient exclusions, interpret each item broadly and forgive spelling errors
             (e.g. "peenut" means peanuts, "cow milk" means dairy).
 
             Use the warnings[] array to flag: any substitution that changes the dish significantly,
             any ingredient you were uncertain about, and any constraint you could not fully satisfy.
+
+            SCHEMA RULES for each ingredient line:
+            - quantity: numeric amount only — use fractions, not decimals (e.g. "3/4", "1 1/2", "2", never "0.25" or "1.5")
+            - unit: measurement unit only — ONLY real units of measure (cup, tsp, tbsp, oz, g, ml, strips, slices, cloves).
+              Leave unit EMPTY ("") for countable items that are named by the food itself (tortillas, eggs, sheets, pieces).
+              Never use the food's own name as the unit.
+            - ingredient: the ingredient name only — do NOT repeat any word already in unit
+              (e.g. if unit="strips" write ingredient="coconut bacon, chopped" NOT "coconut bacon strips, chopped")
+              (e.g. if unit="" write ingredient="corn or flour tortillas", NOT unit="tortillas" ingredient="corn or flour tortillas")
+            - preparation: optional method (e.g. "chopped", "minced") — may be omitted if already in ingredient
+            - substitutionNote: if this ingredient was substituted or significantly changed from the
+              original, provide a brief explanation (1-2 sentences) of why the substitution was made.
+              Set to null (omit the field entirely) if the ingredient was NOT changed from the original.
+              Do NOT set substitutionNote to an empty string — use null for unchanged ingredients.
 
             Return ONLY valid JSON matching the required schema — no markdown fences, no prose, no explanation.
         """.trimIndent()
