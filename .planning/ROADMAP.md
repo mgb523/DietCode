@@ -95,7 +95,14 @@ Plans:
   2. Typography, spacing, and color usage is consistent across all screens and states
   3. Loading, error, and empty states are visually distinct and clear
   4. The overall visual feel matches a professional consumer web app
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — CSS variable theming: override --primary / --primary-foreground in index.css with warm emerald oklch values (D-03)
+- [ ] 05-02-PLAN.md — Branding: create dietcode-logo.svg (kale + fruit + robot) and add colored emerald header band to App.tsx (D-02, D-04, D-05)
+- [ ] 05-03-PLAN.md — DietPillGroup: replace Tooltip with click Popover for info icons; add focus-visible rings to pill buttons (D-06, D-07, D-13)
+- [ ] 05-04-PLAN.md — Mechanical fixes: RecipeCard typography, ServingStepper focus rings, App.tsx responsive padding / accessibility / copy (D-08, D-09, D-10, D-11, D-12, D-13)
+- [ ] 05-05-PLAN.md — Human verification checkpoint: confirm all Phase 5 visual and interaction criteria in browser (D-14)
 
 ## Progress
 
@@ -108,4 +115,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Core Transformation | 3/4 | In progress | - |
 | 3. Scale and Import | 3/2 | Complete   | 2026-05-15 |
 | 4. Output and Polish | 4/4 | Complete | 2026-06-14 |
-| 5. UI Polish | 0/TBD | Not started | - |
+| 5. UI Polish | 0/5 | Not started | - |
