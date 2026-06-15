@@ -1,5 +1,5 @@
 import { cn } from "@/lib/utils"
-import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover"
 import { Info } from "lucide-react"
 
 const DIET_OPTIONS = [
@@ -63,27 +63,29 @@ export function DietPillGroup({ selected, onChange }: Props) {
           onClick={() => toggle(opt.value)}
           className={cn(
             "flex items-center gap-1.5 px-3 py-1 rounded-full text-sm font-normal border cursor-pointer transition-colors",
+            "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring",
             selected.includes(opt.value)
               ? "bg-primary text-primary-foreground border-primary"
               : "bg-background text-foreground border-border hover:bg-muted"
           )}
         >
           {opt.label}
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <span
+          <Popover>
+            <PopoverTrigger asChild>
+              <button
+                type="button"
                 role="img"
                 aria-label={`Info about ${opt.label}`}
                 onClick={e => e.stopPropagation()}
-                className="inline-flex items-center"
+                className="inline-flex items-center cursor-pointer"
               >
                 <Info className="h-3 w-3 opacity-60" />
-              </span>
-            </TooltipTrigger>
-            <TooltipContent side="bottom" className="max-w-[220px] text-xs">
+              </button>
+            </PopoverTrigger>
+            <PopoverContent side="bottom" className="max-w-[220px] text-xs">
               {opt.description}
-            </TooltipContent>
-          </Tooltip>
+            </PopoverContent>
+          </Popover>
         </button>
       ))}
     </div>
