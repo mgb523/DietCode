@@ -1,5 +1,11 @@
 @import "tailwindcss";
 
+:root {
+  /* Warm accent: emerald-700 range — replaces zinc-900 primary (D-03) */
+  --primary: oklch(0.45 0.14 155);            /* ≈ emerald-700 / #2d7a4f */
+  --primary-foreground: oklch(0.98 0.01 155); /* near-white for contrast on emerald background */
+}
+
 @media print {
   body {
     font-size: 12pt;
