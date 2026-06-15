@@ -7,6 +7,7 @@ import { UrlDetectionBadge } from "@/components/UrlDetectionBadge"
 import { ServingStepper } from "@/components/ServingStepper"
 import { ComparisonLayout } from "@/components/ComparisonLayout"
 import { ExportToolbar } from "@/components/ExportToolbar"
+import dietcodeLogo from "@/assets/dietcode-logo.svg"
 
 const DIET_LABELS: Record<string, string> = {
   KETO: "Keto",
@@ -86,8 +87,17 @@ export default function App() {
   }
 
   return (
-    <main className="px-4 py-8">
-      <h1 className="text-2xl font-bold text-center mb-8">DietCode</h1>
+    <>
+      <header className="w-full bg-emerald-700 text-white py-4 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
+        <img
+          src={dietcodeLogo}
+          alt=""
+          aria-hidden="true"
+          className="h-9 w-9 flex-shrink-0"
+        />
+        <h1 className="text-2xl font-bold text-white leading-none">DietCode</h1>
+      </header>
+      <main className="px-4 py-8">
 
       <div className="max-w-2xl mx-auto">
         {!formCollapsed && (
@@ -234,5 +244,6 @@ export default function App() {
         </div>
       )}
     </main>
+    </>
   )
 }
