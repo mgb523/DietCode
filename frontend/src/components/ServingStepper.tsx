@@ -27,7 +27,8 @@ export function ServingStepper({ value, min = 1, onChange, originalServings }: P
           "min-w-9 h-9 flex items-center justify-center",
           "border border-border bg-background hover:bg-muted",
           "rounded-l-md transition-colors",
-          "disabled:opacity-40 disabled:cursor-not-allowed"
+          "disabled:opacity-40 disabled:cursor-not-allowed",
+          "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         )}
       >
         <Minus className="h-4 w-4" />
@@ -45,7 +46,8 @@ export function ServingStepper({ value, min = 1, onChange, originalServings }: P
         className={cn(
           "min-w-9 h-9 flex items-center justify-center",
           "border border-border bg-background hover:bg-muted",
-          "rounded-r-md transition-colors"
+          "rounded-r-md transition-colors",
+          "focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
         )}
       >
         <Plus className="h-4 w-4" />
