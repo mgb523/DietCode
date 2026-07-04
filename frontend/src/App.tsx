@@ -97,7 +97,7 @@ export default function App() {
         />
         <h1 className="text-2xl font-bold text-white leading-none">DietCode</h1>
       </header>
-      <main className="px-4 py-8">
+      <main className="px-4 sm:px-6 lg:px-8 py-8">
 
       <div className="max-w-2xl mx-auto">
         {!formCollapsed && (
@@ -107,7 +107,7 @@ export default function App() {
               <div className="relative">
                 <UrlDetectionBadge visible={isUrlInput} />
                 <textarea
-                  className="w-full resize-y border rounded-md p-3 text-sm bg-background focus:outline-none focus:ring-1 focus:ring-ring"
+                  className="w-full resize-y border rounded-md p-3 text-sm bg-background focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring"
                   rows={10}
                   placeholder="Paste your recipe here, or enter a URL..."
                   value={recipeText}
@@ -157,7 +157,7 @@ export default function App() {
             </button>
 
             {error && (
-              <p className="text-sm text-destructive mt-2">⚠ {error}</p>
+              <p role="alert" className="text-sm text-destructive mt-2">⚠ {error}</p>
             )}
           </form>
         )}
@@ -212,7 +212,7 @@ export default function App() {
                   </div>
                 ) : (
                   <p className="text-sm text-muted-foreground">
-                    Original recipe unavailable.
+                    Original recipe unavailable — paste it above to see the comparison.
                   </p>
                 )
               ) : (

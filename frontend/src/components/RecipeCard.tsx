@@ -137,7 +137,7 @@ export function RecipeCard({ recipe, className }: Props) {
         </div>
       </CardHeader>
       <CardContent>
-        <h3 className="font-semibold mb-2">Ingredients</h3>
+        <h3 className="font-bold mb-2">Ingredients</h3>
         <ul className="list-disc pl-5 space-y-1 mb-2">
           {displayedIngredients.filter(ing => !isToTaste(ing)).map((ing, i) => (
             <li key={i}>
@@ -164,10 +164,10 @@ export function RecipeCard({ recipe, className }: Props) {
           </div>
         )}
 
-        <h3 className="font-semibold mb-2">Instructions</h3>
+        <h3 className="font-bold mb-2">Instructions</h3>
         <ol className="list-decimal pl-5 space-y-1">
           {recipe.instructions.map((step, i) => (
-            <li key={i}>{step}</li>
+            <li key={i} className="leading-relaxed">{step}</li>
           ))}
         </ol>
 
