@@ -3,11 +3,15 @@ package com.dietcode.service
 import com.dietcode.model.DietProfile
 import com.dietcode.model.RecipeDocument
 import com.dietcode.model.TransformedRecipe
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.ai.chat.client.ChatClient
 import org.springframework.stereotype.Service
 
 @Service
-class TransformationService(chatClientBuilder: ChatClient.Builder) {
+class TransformationService(
+    chatClientBuilder: ChatClient.Builder,
+    private val objectMapper: ObjectMapper
+) {
     private val chatClient = chatClientBuilder.build()
 
     fun transform(
@@ -80,12 +84,21 @@ class TransformationService(chatClientBuilder: ChatClient.Builder) {
             ${recipe.instructions}
         """.trimIndent()
 
-        return chatClient
+        val raw = chatClient
             .prompt()
             .system(systemPrompt)
             .user(userPrompt)
             .call()
-            .entity(TransformedRecipe::class.java)
-            ?: throw IllegalStateException("LLM returned null — possible malformed response")
+            .content()
+            ?: throw IllegalStateException("LLM returned null response")
+
+        // Strip markdown code fences — LLM occasionally wraps JSON in ```json ... ``` despite
+        // the prompt instruction. Jackson fails on the leading backtick without this guard.
+        val json = raw.trim().let { s ->
+            if (s.startsWith("```")) s.removePrefix("```json").removePrefix("```").removeSuffix("```").trim()
+            else s
+        }
+
+        return objectMapper.readValue(json, TransformedRecipe::class.java)
     }
 }
