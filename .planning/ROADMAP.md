@@ -15,7 +15,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 1: Foundation** - Project scaffold, CORS, locked data models, LLM output schema defined (completed 2026-04-21)
 - [ ] **Phase 2: Core Transformation** - Paste input, diet/intolerance controls, LLM rewrite, clean recipe display
 - [x] **Phase 3: Scale and Import** - Serving scaler with sub-linear rules, URL scraping, auto-detect input routing (completed 2026-05-15)
-- [ ] **Phase 4: Output and Polish** - Before/after comparison, substitution annotations, print PDF, Google Drive export
+- [x] **Phase 4: Output and Polish** - Before/after comparison, substitution annotations, print PDF, Google Drive export (completed 2026-06-14)
 - [ ] **Phase 5: UI Polish** - General visual refinement: spacing, typography, responsiveness, overall feel and cohesion
 
 ## Phase Details
@@ -84,7 +84,7 @@ Plans:
 - [x] 04-01-PLAN.md — Backend: extend TransformedRecipe with originalIngredients/originalInstructions, populate in RecipeController, add substitutionNote rule to LLM system prompt
 - [x] 04-02-PLAN.md — Frontend foundation: install shadcn popover, create ComparisonLayout, restructure App.tsx result section, RecipeCard className prop, print CSS
 - [x] 04-03-PLAN.md — Frontend components: SubstitutionPopover, ExportToolbar (print + Drive OAuth), wire into App.tsx, document VITE_GOOGLE_CLIENT_ID in .env.example
-- [ ] 04-04-PLAN.md — Human verification checkpoint: confirm all 4 Phase 4 success criteria in browser
+- [x] 04-04-PLAN.md — Human verification checkpoint: confirm all 4 Phase 4 success criteria in browser
 
 ### Phase 5: UI Polish
 **Goal**: The app feels polished and professional — consistent spacing, readable typography, responsive layout, and visual cohesion across all components and states.
@@ -95,7 +95,14 @@ Plans:
   2. Typography, spacing, and color usage is consistent across all screens and states
   3. Loading, error, and empty states are visually distinct and clear
   4. The overall visual feel matches a professional consumer web app
-**Plans**: TBD
+**Plans**: 5 plans
+
+Plans:
+- [ ] 05-01-PLAN.md — CSS variable theming: override --primary / --primary-foreground in index.css with warm emerald oklch values (D-03)
+- [ ] 05-02-PLAN.md — Branding: create dietcode-logo.svg (kale + fruit + robot) and add colored emerald header band to App.tsx (D-02, D-04, D-05)
+- [ ] 05-03-PLAN.md — DietPillGroup: replace Tooltip with click Popover for info icons; add focus-visible rings to pill buttons (D-06, D-07, D-13)
+- [ ] 05-04-PLAN.md — Mechanical fixes: RecipeCard typography, ServingStepper focus rings, App.tsx responsive padding / accessibility / copy (D-08, D-09, D-10, D-11, D-12, D-13)
+- [ ] 05-05-PLAN.md — Human verification checkpoint: confirm all Phase 5 visual and interaction criteria in browser (D-14)
 
 ## Progress
 
@@ -107,5 +114,5 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 1. Foundation | 3/3 | Complete | 2026-04-21 |
 | 2. Core Transformation | 3/4 | In progress | - |
 | 3. Scale and Import | 3/2 | Complete   | 2026-05-15 |
-| 4. Output and Polish | 3/4 | In progress | - |
-| 5. UI Polish | 0/TBD | Not started | - |
+| 4. Output and Polish | 4/4 | Complete | 2026-06-14 |
+| 5. UI Polish | 0/5 | Not started | - |

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 52 38">
+  <!-- Kale leaf: left area -->
+  <ellipse cx="14" cy="17" rx="10" ry="6" fill="#2d7a4f" transform="rotate(-20 14 17)"/>
+  <!-- Scalloped leaf edge bumps -->
+  <circle cx="6"  cy="13" r="3.5" fill="#2d7a4f"/>
+  <circle cx="11" cy="10" r="3.5" fill="#2d7a4f"/>
+  <circle cx="17" cy="10" r="3.5" fill="#2d7a4f"/>
+  <circle cx="22" cy="13" r="3.5" fill="#2d7a4f"/>
+  <circle cx="22" cy="19" r="3.5" fill="#2d7a4f"/>
+  <circle cx="6"  cy="20" r="3.5" fill="#2d7a4f"/>
+  <!-- Leaf center vein -->
+  <line x1="14" y1="23" x2="14" y2="11" stroke="#4ade80" stroke-width="1.4" stroke-linecap="round"/>
+  <!-- Side veins -->
+  <line x1="14" y1="14" x2="9"  y2="12" stroke="#4ade80" stroke-width="0.9" stroke-linecap="round"/>
+  <line x1="14" y1="17" x2="19" y2="15" stroke="#4ade80" stroke-width="0.9" stroke-linecap="round"/>
+  <!-- Leaf stem -->
+  <rect x="12.5" y="22" width="3" height="7" rx="1.5" fill="#2d7a4f"/>
+
+  <!-- Fruit (orange): right area -->
+  <circle cx="38" cy="18" r="14" fill="#f59e0b"/>
+  <!-- Highlight spot -->
+  <circle cx="33" cy="12" r="4.5" fill="#fde68a" opacity="0.75"/>
+  <!-- Stem -->
+  <rect x="36.5" y="3" width="3" height="5" rx="1.5" fill="#78350f"/>
+  <!-- Leaf on stem -->
+  <ellipse cx="41.5" cy="4.5" rx="4.5" ry="2" fill="#2d7a4f" transform="rotate(-30 41.5 4.5)"/>
+</svg>

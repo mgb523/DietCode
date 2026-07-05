@@ -1,6 +1,7 @@
 package com.dietcode.service
 
 import com.dietcode.model.DietProfile
+import com.fasterxml.jackson.databind.ObjectMapper
 import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
@@ -13,7 +14,7 @@ class TransformationServiceTest {
 
     @Test
     fun `empty dietProfiles renders as none in prompt`() {
-        val service = TransformationService(mockk(relaxed = true))
+        val service = TransformationService(mockk(relaxed = true), ObjectMapper())
         val dietRules = if (emptyList<DietProfile>().isEmpty()) "none"
             else emptyList<DietProfile>().joinToString(", ") { it.name.lowercase().replace("_", "-") }
         assertEquals("none", dietRules)

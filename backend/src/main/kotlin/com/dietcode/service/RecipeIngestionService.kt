@@ -119,13 +119,28 @@ class RecipeIngestionService {
         else -> null
     }
 
-    private fun extractInstructions(raw: Any?): List<String> = when (raw) {
+    internal fun extractInstructions(raw: Any?): List<String> = when (raw) {
         is String -> listOf(raw)
-        is List<*> -> raw.mapNotNull { step ->
+        is List<*> -> raw.flatMap { step ->
             when (step) {
-                is String -> step
-                is Map<*, *> -> step["text"] as? String  // HowToStep schema
-                else -> null
+                is String -> listOf(step)
+                is Map<*, *> -> when (step["@type"]) {
+                    "HowToSection" -> {
+                        // Section groups steps under a name (e.g. "Beef Filling:")
+                        // Prepend the section header so the LLM and UI both see the structure.
+                        val sectionName = step["name"] as? String
+                        @Suppress("UNCHECKED_CAST")
+                        val items = step["itemListElement"] as? List<*> ?: emptyList<Any>()
+                        val nested = extractInstructions(items)
+                        if (sectionName != null) listOf(sectionName) + nested else nested
+                    }
+                    else -> {
+                        // HowToStep or unrecognised type — pull "text" field
+                        val text = step["text"] as? String
+                        if (text != null) listOf(text) else emptyList()
+                    }
+                }
+                else -> emptyList()
             }
         }
         else -> emptyList()
