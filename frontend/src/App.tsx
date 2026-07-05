@@ -152,7 +152,7 @@ export default function App() {
               {loading ? (
                 <><Loader2 className="inline mr-2 h-4 w-4 animate-spin" />Transforming...</>
               ) : (
-                "Transform Recipe"
+                "Mod This Recipe"
               )}
             </button>
 
