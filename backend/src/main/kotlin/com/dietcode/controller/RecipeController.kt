@@ -30,7 +30,11 @@ class RecipeController(
         val llmServings = transformed.servings
 
         // Attach original recipe data from recipeDoc (per D-01, D-02)
+        // recipeName: LLM occasionally omits it — fall back to scraped name or "Untitled"
         val withOriginals = transformed.copy(
+            recipeName = transformed.recipeName?.takeIf { it.isNotBlank() }
+                ?: recipeDoc.name?.takeIf { it.isNotBlank() }
+                ?: "Untitled",
             originalIngredients = recipeDoc.rawIngredients.map { raw ->
                 IngredientLine(quantity = "", unit = "", ingredient = raw, preparation = null, substitutionNote = null)
             },
