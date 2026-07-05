@@ -111,6 +111,26 @@ function rescaleIngredients(
   })
 }
 
+// A string is a section header if it ends with ":" and has no sentence-ending punctuation
+// before that colon (i.e. it's a label, not a step that happens to end with a colon).
+function isSectionHeader(step: string): boolean {
+  const t = step.trim()
+  return t.endsWith(":") && !/[.!?]/.test(t.slice(0, -1))
+}
+
+type InstructionItem =
+  | { kind: "header"; text: string }
+  | { kind: "step"; num: number; text: string }
+
+function buildInstructionItems(instructions: string[]): InstructionItem[] {
+  let n = 0
+  return instructions.map(step =>
+    isSectionHeader(step)
+      ? { kind: "header", text: step }
+      : { kind: "step", num: ++n, text: step }
+  )
+}
+
 export function RecipeCard({ recipe, className }: Props) {
   // currentServings starts at recipe.servings (already-scaled by backend at user's initial targetServings)
   const [currentServings, setCurrentServings] = useState(recipe.servings)
@@ -121,7 +141,7 @@ export function RecipeCard({ recipe, className }: Props) {
   return (
     <Card className={cn("mx-auto", className)}>
       <CardHeader>
-        <CardTitle>{recipe.recipeName}</CardTitle>
+        <CardTitle className="font-veggieburger text-xl">{recipe.recipeName}</CardTitle>
         <div className="flex items-center gap-3 mt-1">
           <span className="hidden print:block text-sm text-muted-foreground">
             {currentServings} servings
@@ -137,7 +157,7 @@ export function RecipeCard({ recipe, className }: Props) {
         </div>
       </CardHeader>
       <CardContent>
-        <h3 className="font-bold mb-2">Ingredients</h3>
+        <h3 className="font-veggieburger text-lg mb-2">Ingredients</h3>
         <ul className="list-disc pl-5 space-y-1 mb-2">
           {displayedIngredients.filter(ing => !isToTaste(ing)).map((ing, i) => (
             <li key={i}>
@@ -152,7 +172,7 @@ export function RecipeCard({ recipe, className }: Props) {
         </ul>
         {displayedIngredients.some(isToTaste) && (
           <div className="mb-6">
-            <p className="text-sm font-semibold text-muted-foreground mt-3 mb-1">To taste:</p>
+            <p className="font-veggieburger text-base text-muted-foreground mt-3 mb-1">To taste</p>
             <ul className="list-disc pl-5 space-y-1">
               {displayedIngredients.filter(isToTaste).map((ing, i) => (
                 <li key={i}>
@@ -164,16 +184,25 @@ export function RecipeCard({ recipe, className }: Props) {
           </div>
         )}
 
-        <h3 className="font-bold mb-2">Instructions</h3>
-        <ol className="list-decimal pl-5 space-y-1">
-          {recipe.instructions.map((step, i) => (
-            <li key={i} className="leading-relaxed">{step}</li>
-          ))}
-        </ol>
+        <h3 className="font-veggieburger text-lg mb-2">Instructions</h3>
+        <div className="space-y-1">
+          {buildInstructionItems(recipe.instructions).map((item, i) =>
+            item.kind === "header" ? (
+              <p key={i} className="font-veggieburger text-base mt-4 mb-1 text-muted-foreground">
+                {item.text.replace(/:$/, "")}
+              </p>
+            ) : (
+              <div key={i} className="flex gap-2 leading-relaxed">
+                <span className="shrink-0 font-semibold text-muted-foreground w-5 text-right">{item.num}.</span>
+                <span>{item.text}</span>
+              </div>
+            )
+          )}
+        </div>
 
         {recipe.warnings.length > 0 && (
           <div className="mt-6 p-3 bg-amber-50 border border-amber-200 rounded text-sm">
-            <strong>Notes:</strong>
+            <strong className="font-veggieburger text-base font-normal">Notes</strong>
             <ul className="list-disc pl-4 mt-1 space-y-1">
               {recipe.warnings.map((w, i) => (
                 <li key={i}>{w}</li>

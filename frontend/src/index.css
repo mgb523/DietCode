@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 @theme inline {
+  --font-veggieburger: 'VeggieBurger', 'Fredoka', cursive;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -33,9 +34,9 @@
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  /* Warm accent: emerald-700 range — replaces zinc-900 primary (D-03) */
-  --primary: oklch(0.45 0.14 155);
-  --primary-foreground: oklch(0.98 0.01 155);
+  /* Amber-orange primary — warm complement to logo's forest green, matches banner gradient (D-05) */
+  --primary: oklch(0.67 0.18 40);
+  --primary-foreground: oklch(0.98 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
   --muted: oklch(0.97 0 0);
@@ -46,6 +47,18 @@
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
   --ring: oklch(0.708 0 0);
+}
+
+@font-face {
+  font-family: 'VeggieBurger';
+  src: url('/src/assets/fonts/veggieburger.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+.font-veggieburger {
+  font-family: 'VeggieBurger', 'Fredoka', cursive;
 }
 
 @media print {

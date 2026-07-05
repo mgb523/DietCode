@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 70 92">
+  <!-- Antenna pole -->
+  <rect x="31.75" y="5" width="3.5" height="8" rx="1.75" fill="#94a3b8"/>
+  <!-- Antenna ball (leaf green) -->
+  <circle cx="33.5" cy="4" r="4" fill="#2d7a4f"/>
+
+  <!-- HEAD -->
+  <rect x="16" y="12" width="35" height="24" rx="4.5" fill="#94a3b8"/>
+  <!-- Face screen/inner panel -->
+  <rect x="20" y="15" width="27" height="17" rx="3" fill="#e2e8f0"/>
+  <!-- Left eye -->
+  <circle cx="28.5" cy="23" r="3.5" fill="#1e293b"/>
+  <!-- Right eye -->
+  <circle cx="41"   cy="23" r="3.5" fill="#1e293b"/>
+  <!-- Eye shines -->
+  <circle cx="29.7" cy="21.8" r="1.1" fill="white"/>
+  <circle cx="42.2" cy="21.8" r="1.1" fill="white"/>
+  <!-- Smile (emerald accent) -->
+  <path d="M 26 30 Q 34.5 35 43 30" stroke="#2d7a4f" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+  <!-- NECK -->
+  <rect x="28.5" y="36" width="10" height="6" rx="3" fill="#7f8ea3"/>
+
+  <!-- BODY -->
+  <rect x="13" y="42" width="41" height="30" rx="6" fill="#94a3b8"/>
+
+  <!-- LEFT ARM / HAND -->
+  <rect x="3"  y="45" width="10" height="8" rx="4" fill="#94a3b8"/>
+  <!-- RIGHT ARM / HAND -->
+  <rect x="54" y="45" width="10" height="8" rx="4" fill="#94a3b8"/>
+
+  <!-- ===== FORK  (left hand, tines pointing up) ===== -->
+  <!-- Three tines -->
+  <rect x="4"  y="27" width="2" height="15" rx="1"   fill="#cbd5e1"/>
+  <rect x="7"  y="27" width="2" height="15" rx="1"   fill="#cbd5e1"/>
+  <rect x="10" y="27" width="2" height="15" rx="1"   fill="#cbd5e1"/>
+  <!-- Tine base connector bar -->
+  <rect x="4"  y="41" width="8.5" height="1.8" rx="0.9" fill="#cbd5e1"/>
+  <!-- Fork shaft/neck (connects tines to handle) -->
+  <rect x="7"  y="42" width="2"   height="11"  rx="1"   fill="#cbd5e1"/>
+  <!-- Guard / collar -->
+  <rect x="4.5" y="52" width="7"  height="3"   rx="1.5" fill="#9ca3af"/>
+  <!-- Handle (warm wood tone) -->
+  <rect x="5.5" y="54" width="5"  height="15"  rx="2.5" fill="#b45309"/>
+
+  <!-- ===== KNIFE  (right hand, blade pointing up) ===== -->
+  <!-- Blade: wider at guard, tapering to tip -->
+  <path d="M 57 49 L 63.5 49 L 60.5 27 Z" fill="#e8ecf0"/>
+  <!-- Sharp edge highlight (right side) -->
+  <line x1="63.5" y1="49" x2="60.5" y2="27"
+        stroke="#94a3b8" stroke-width="0.7" stroke-linecap="round"/>
+  <!-- Spine / blunt back edge (left side) -->
+  <line x1="57"   y1="49" x2="60.5" y2="27"
+        stroke="#d1d5db" stroke-width="1"   stroke-linecap="round"/>
+  <!-- Guard / collar -->
+  <rect x="55.5" y="49" width="9"   height="3.5" rx="1.75" fill="#9ca3af"/>
+  <!-- Handle (warm wood tone) -->
+  <rect x="57"   y="52" width="5"   height="15"  rx="2.5"  fill="#b45309"/>
+
+  <!-- LEGS -->
+  <rect x="19" y="72" width="13" height="15" rx="4.5" fill="#7f8ea3"/>
+  <rect x="35" y="72" width="13" height="15" rx="4.5" fill="#7f8ea3"/>
+
+  <!-- FEET -->
+  <rect x="15" y="84" width="17" height="7" rx="3.5" fill="#64748b"/>
+  <rect x="35" y="84" width="17" height="7" rx="3.5" fill="#64748b"/>
+</svg>

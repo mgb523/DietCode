@@ -7,7 +7,8 @@ import { UrlDetectionBadge } from "@/components/UrlDetectionBadge"
 import { ServingStepper } from "@/components/ServingStepper"
 import { ComparisonLayout } from "@/components/ComparisonLayout"
 import { ExportToolbar } from "@/components/ExportToolbar"
-import dietcodeLogo from "@/assets/dietcode-logo.svg"
+import dietcodeLogo  from "@/assets/dietcode-logo.svg"
+import dietcodeRobot from "@/assets/dietcode-robot.svg"
 
 const DIET_LABELS: Record<string, string> = {
   KETO: "Keto",
@@ -87,22 +88,44 @@ export default function App() {
 
   return (
     <>
-      <header className="w-full bg-emerald-700 text-white py-4 px-4 sm:px-6 lg:px-8 flex items-center gap-3">
-        <img
-          src={dietcodeLogo}
-          alt=""
-          aria-hidden="true"
-          className="h-9 w-9 flex-shrink-0"
-        />
-        <h1 className="text-2xl font-bold text-white leading-none">DietCode</h1>
+      <header
+        className="w-full text-white py-5 px-4 sm:px-6 lg:px-8 flex flex-col items-center justify-center gap-2 shadow-lg"
+        style={{ background: "linear-gradient(135deg, #f59e0b 0%, #f97316 60%, #ea580c 100%)" }}
+      >
+        <div className="flex items-center justify-center gap-5 sm:gap-8">
+          {/* Kale + fruit — left of title */}
+          <img
+            src={dietcodeLogo}
+            alt=""
+            aria-hidden="true"
+            className="h-14 sm:h-16 drop-shadow-lg flex-shrink-0"
+          />
+
+          {/* Brand name */}
+          <h1 className="font-veggieburger text-5xl sm:text-6xl text-white leading-none drop-shadow-md">
+            DietCode
+          </h1>
+
+          {/* Robot — right of title */}
+          <img
+            src={dietcodeRobot}
+            alt=""
+            aria-hidden="true"
+            className="h-16 sm:h-20 drop-shadow-lg flex-shrink-0"
+          />
+        </div>
+
+        <p className="font-veggieburger text-amber-100 text-sm sm:text-base opacity-90 drop-shadow-sm">
+          Recipe transformation, your way
+        </p>
       </header>
-      <main className="px-4 sm:px-6 lg:px-8 py-8">
+      <main className="px-4 sm:px-6 lg:px-8 py-8" style={{ background: "linear-gradient(180deg, #fffbeb 0%, #ffffff 160px)" }}>
 
       <div className="max-w-2xl mx-auto">
         {!formCollapsed && (
-          <form onSubmit={handleSubmit} className="space-y-6">
+          <form onSubmit={handleSubmit} className="space-y-6 bg-white rounded-2xl shadow-sm border border-amber-100 p-6 sm:p-8">
             <section>
-              <label className="block text-sm mb-2">Your Recipe</label>
+              <label className="block font-veggieburger text-base text-stone-700 mb-2">Your Recipe</label>
               <div className="relative">
                 <UrlDetectionBadge visible={isUrlInput} />
                 <textarea
@@ -123,11 +146,11 @@ export default function App() {
 
             <section className="space-y-4">
               <div>
-                <label className="block text-sm mb-2">Diet profiles</label>
+                <label className="block font-veggieburger text-base text-stone-700 mb-2">Diet profiles</label>
                 <DietPillGroup selected={selectedDiets} onChange={setSelectedDiets} />
               </div>
               <div>
-                <label className="block text-sm mb-2">Ingredients to omit or replace</label>
+                <label className="block font-veggieburger text-base text-stone-700 mb-2">Ingredients to omit or replace</label>
                 <TagInput
                   tags={intolerances}
                   onChange={setIntolerances}
@@ -138,7 +161,7 @@ export default function App() {
 
             {!isUrlInput && (
               <section>
-                <label className="block text-sm mb-2">Servings</label>
+                <label className="block font-veggieburger text-base text-stone-700 mb-2">Servings</label>
                 <ServingStepper value={targetServings} min={1} onChange={setTargetServings} />
               </section>
             )}
@@ -146,7 +169,7 @@ export default function App() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-2 px-4 rounded-md bg-primary text-primary-foreground text-sm font-medium disabled:opacity-60"
+              className="w-full py-2 px-4 rounded-md bg-primary text-primary-foreground font-veggieburger text-lg disabled:opacity-60"
             >
               {loading ? (
                 <><Loader2 className="inline mr-2 h-4 w-4 animate-spin" />Transforming...</>
@@ -183,7 +206,7 @@ export default function App() {
           </div>
           <ComparisonLayout>
             <section aria-label="Original recipe" className="flex-1 min-w-0 print:hidden">
-              <p className="text-sm font-bold text-muted-foreground uppercase tracking-wide mb-2">
+              <p className="font-veggieburger text-lg text-muted-foreground mb-2">
                 Original
               </p>
               {isUrlInput ? (
@@ -191,7 +214,7 @@ export default function App() {
                 recipe.originalIngredients && recipe.originalIngredients.length > 0 ? (
                   <div className="text-sm space-y-4">
                     <div>
-                      <p className="font-semibold mb-1">Ingredients</p>
+                      <p className="font-veggieburger text-base mb-1">Ingredients</p>
                       <ul className="list-disc pl-5 space-y-1">
                         {recipe.originalIngredients.map((ing, i) => (
                           <li key={i}>{ing.ingredient}</li>
@@ -200,7 +223,7 @@ export default function App() {
                     </div>
                     {recipe.originalInstructions && recipe.originalInstructions.length > 0 && (
                       <div>
-                        <p className="font-semibold mb-1">Instructions</p>
+                        <p className="font-veggieburger text-base mb-1">Instructions</p>
                         <ol className="list-decimal pl-5 space-y-1">
                           {recipe.originalInstructions.map((step, i) => (
                             <li key={i}>{step}</li>
@@ -220,7 +243,7 @@ export default function App() {
               )}
             </section>
             <section aria-label="Adapted recipe" className="flex-1 min-w-0">
-              <p className="text-sm font-bold text-muted-foreground uppercase tracking-wide mb-1 print:hidden">
+              <p className="font-veggieburger text-lg text-muted-foreground mb-1 print:hidden">
                 Adapted
               </p>
               {(selectedDiets.length > 0 || intolerances.length > 0) && (
@@ -237,7 +260,10 @@ export default function App() {
                   ))}
                 </div>
               )}
-              <RecipeCard recipe={recipe} className="max-w-none" />
+              <RecipeCard
+                recipe={{ ...recipe, recipeName: `Modified: ${recipe.recipeName}` }}
+                className="max-w-none"
+              />
             </section>
           </ComparisonLayout>
         </div>
