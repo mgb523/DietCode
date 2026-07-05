@@ -66,21 +66,20 @@ export default function App() {
         })
       })
       if (!res.ok) {
-        if (isUrlInput) {
-          const body = await res.json().catch(() => ({})) as Record<string, string>
-          if (body.error === "scraping_failed") {
-            setError("Couldn't import this URL. Open it, copy the recipe text, and paste it here.")
-            return
-          }
+        const body = await res.json().catch(() => ({})) as Record<string, string>
+        if (isUrlInput && body.error === "scraping_failed") {
+          setError("Couldn't import this URL. Open it, copy the recipe text, and paste it here.")
+          return
         }
-        throw new Error(`Backend returned ${res.status}`)
+        const detail = body.message || body.error || `Backend returned ${res.status}`
+        throw new Error(detail)
       }
       const data = await res.json() as TransformedRecipe
       setRecipe(data)
       setTargetServings(data.originalServings || null)
       setFormCollapsed(true)
-    } catch {
-      setError("Transformation failed — please try again.")
+    } catch (err) {
+      setError(err instanceof Error ? err.message : "Transformation failed — please try again.")
     } finally {
       setLoading(false)
     }

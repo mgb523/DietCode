@@ -16,4 +16,12 @@ class ValidationExceptionHandler {
     @ResponseStatus(HttpStatus.UNPROCESSABLE_ENTITY)
     fun handleScraping(e: ScrapingException) =
         mapOf("error" to "scraping_failed", "message" to e.message.orEmpty())
+
+    @ExceptionHandler(Exception::class)
+    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+    fun handleGeneric(e: Exception) = mapOf(
+        "error" to "internal_error",
+        "message" to (e.message ?: "Unknown error"),
+        "cause" to (e.cause?.message ?: "")
+    )
 }
