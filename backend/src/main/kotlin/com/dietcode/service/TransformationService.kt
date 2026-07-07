@@ -67,6 +67,12 @@ class TransformationService(
               Set to null (omit the field entirely) if the ingredient was NOT changed from the original.
               Do NOT set substitutionNote to an empty string — use null for unchanged ingredients.
 
+            'servings' in your JSON output must always be a positive integer (minimum 1).
+            If the recipe doesn't specify a yield, infer from context or default to 1.
+
+            'instructions' must always be a JSON array of strings — one string per step.
+            Never return instructions as a single concatenated string.
+
             Return ONLY valid JSON matching the required schema — no markdown fences, no prose, no explanation.
         """.trimIndent()
 
@@ -77,7 +83,7 @@ class TransformationService(
 
             Recipe:
             Name: ${recipe.name ?: "Untitled"}
-            Servings: ${recipe.servings ?: "unknown"}
+            Servings: ${recipe.servings ?: "(not specified — infer or use 1)"}
             Ingredients:
             ${recipe.rawIngredients.joinToString("\n")}
             Instructions:
