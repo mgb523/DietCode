@@ -61,7 +61,33 @@ class RecipeIngestionService {
             )
         }
 
-        // Heuristic HTML fallback
+        // Blog-post prose heuristic — old Blogger, WordPress, and similar pages embed the
+        // recipe as inline prose rather than structured markup.  These sites have no JSON-LD /
+        // microdata and their <li> items are navigation / tag clouds, not ingredients.
+        // Check well-known post-body selectors before falling through to the generic <li> sweep.
+        val blogBodySelectors = listOf(
+            "div.post-body",          // Blogger
+            "div.entry-content",      // WordPress (Classic / Twentyxx themes)
+            "div.td-post-content",    // TagDiv newspaper theme
+            "div.post-content",       // generic
+            "div.entry-body",         // generic
+        )
+        for (selector in blogBodySelectors) {
+            val area = doc.selectFirst(selector) ?: continue
+            val text = area.text().trim()
+            if (text.length > 50) {
+                return RecipeDocument(
+                    name = doc.title().takeIf { it.isNotBlank() },
+                    rawIngredients = text.lines().filter { it.isNotBlank() },
+                    instructions = text,
+                    servings = null
+                )
+            }
+        }
+
+        // Heuristic HTML fallback — recipe sites that use <li> for ingredients but lack
+        // structured markup.  This comes after the blog-body check because blog <li> items
+        // are almost always navigation / label clouds, not ingredients.
         val listItems = doc.select("ul li, ol li").map { it.text() }.filter { it.isNotBlank() }
         if (listItems.isNotEmpty()) {
             return RecipeDocument(
