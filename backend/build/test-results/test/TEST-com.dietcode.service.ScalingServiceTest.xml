@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.dietcode.service.ScalingServiceTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-06-13T19:25:58.751Z" hostname="mac.lan" time="0.007">
+<testsuite name="com.dietcode.service.ScalingServiceTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2026-07-05T00:27:48.487Z" hostname="mac.lan" time="0.005">
   <properties/>
   <testcase name="parseQuantity parses mixed number()" classname="com.dietcode.service.ScalingServiceTest" time="0.002"/>
   <testcase name="scale doubles linear ingredient from 2 to 4 servings()" classname="com.dietcode.service.ScalingServiceTest" time="0.0"/>
-  <testcase name="scale applies sub-linear factor to baking powder()" classname="com.dietcode.service.ScalingServiceTest" time="0.002"/>
+  <testcase name="scale applies sub-linear factor to baking powder()" classname="com.dietcode.service.ScalingServiceTest" time="0.001"/>
   <testcase name="scale returns recipe unchanged when targetServings equals originalServings()" classname="com.dietcode.service.ScalingServiceTest" time="0.0"/>
   <testcase name="parseQuantity parses simple fraction()" classname="com.dietcode.service.ScalingServiceTest" time="0.0"/>
-  <testcase name="parseQuantity returns null for blank string()" classname="com.dietcode.service.ScalingServiceTest" time="0.001"/>
+  <testcase name="parseQuantity returns null for blank string()" classname="com.dietcode.service.ScalingServiceTest" time="0.0"/>
   <testcase name="scale sets servings to targetServings on result()" classname="com.dietcode.service.ScalingServiceTest" time="0.0"/>
   <testcase name="scale applies sub-linear factor to salt at 2x()" classname="com.dietcode.service.ScalingServiceTest" time="0.0"/>
   <testcase name="scale skips ingredient with empty quantity()" classname="com.dietcode.service.ScalingServiceTest" time="0.0"/>
