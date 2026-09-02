@@ -48,6 +48,8 @@ export default function App() {
   const [selectedDiets, setSelectedDiets] = useState<string[]>([])
   const [intolerances, setIntolerances] = useState<string[]>([])
   const [targetServings, setTargetServings] = useState<number | null>(null)
+  // Lifted from RecipeCard so ExportToolbar exports the serving count the user sees.
+  const [currentServings, setCurrentServings] = useState<number>(1)
 
   const isUrlInput = recipeText.startsWith("http://") || recipeText.startsWith("https://")
 
@@ -77,6 +79,7 @@ export default function App() {
       }
       const data = await res.json() as TransformedRecipe
       setRecipe(data)
+      setCurrentServings(data.servings)
       setTargetServings(data.originalServings || null)
       setFormCollapsed(true)
     } catch (err) {
@@ -202,7 +205,11 @@ export default function App() {
             </button>
           </div>
           <div className="max-w-5xl mx-auto mb-6 print:hidden">
-            <ExportToolbar recipe={recipe} selectedDiets={selectedDiets} />
+            <ExportToolbar
+              recipe={recipe}
+              selectedDiets={selectedDiets}
+              currentServings={currentServings}
+            />
           </div>
           <ComparisonLayout>
             <section aria-label="Original recipe" className="flex-1 min-w-0 print:hidden">
@@ -263,6 +270,8 @@ export default function App() {
               <RecipeCard
                 recipe={{ ...recipe, recipeName: `Modified: ${recipe.recipeName}` }}
                 className="max-w-none"
+                currentServings={currentServings}
+                onServingsChange={setCurrentServings}
               />
             </section>
           </ComparisonLayout>

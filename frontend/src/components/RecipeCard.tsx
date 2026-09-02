@@ -1,118 +1,35 @@
-import { useState } from "react"
-import Fraction from "fraction.js"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { ServingStepper } from "@/components/ServingStepper"
-import { cn } from "@/lib/utils"
 import { SubstitutionPopover } from "@/components/SubstitutionPopover"
-
-interface IngredientLine {
-  quantity: string | null
-  unit: string | null
-  ingredient: string | null
-  preparation: string | null
-  substitutionNote: string | null
-}
+import { cn } from "@/lib/utils"
+import {
+  type IngredientLine,
+  isToTaste,
+  rescaleIngredients,
+  shouldShowUnit,
+} from "@/lib/scaling"
 
 interface TransformedRecipe {
   recipeName: string
   ingredients: IngredientLine[]
   instructions: string[]
-  servings: number          // already-scaled to user's targetServings by backend
-  originalServings: number  // LLM-inferred count; for "(original: N)" label
+  servings: number          // backend-scaled baseline
+  originalServings: number  // LLM-inferred; for "(original: N)" label
   warnings: string[]
 }
 
 interface Props {
   recipe: TransformedRecipe
   className?: string
+  /** Controlled — caller (App) owns this so ExportToolbar sees the same value. */
+  currentServings: number
+  onServingsChange: (n: number) => void
 }
 
-// Mirror backend ScalingService.SUBLINEAR_KEYWORDS (TRANS-04 requirement)
-const SUBLINEAR_KEYWORDS = [
-  'baking powder', 'baking soda', 'bicarbonate', 'yeast',
-  'salt', 'cayenne', 'chili powder', 'red pepper flakes', 'black pepper',
-  'cinnamon', 'nutmeg', 'cloves', 'allspice', 'ginger',
-  'cardamom', 'turmeric', 'cumin'
-]
+// ── Instruction rendering ────────────────────────────────────────────────────
 
-function isSubLinear(ingredient: string): boolean {
-  const lower = ingredient.toLowerCase()
-  return SUBLINEAR_KEYWORDS.some(kw => lower.includes(kw))
-}
-
-const UNICODE_FRACTIONS: Record<string, string> = {
-  '½': '1/2', '⅓': '1/3', '⅔': '2/3', '¼': '1/4', '¾': '3/4',
-  '⅕': '1/5', '⅖': '2/5', '⅗': '3/5', '⅘': '4/5',
-  '⅙': '1/6', '⅚': '5/6', '⅛': '1/8', '⅜': '3/8', '⅝': '5/8', '⅞': '7/8',
-}
-
-function normalizeQuantity(s: string): string {
-  // Replace unicode fraction chars, handling "1½" → "1 1/2"
-  return s.replace(/[½⅓⅔¼¾⅕⅖⅗⅘⅙⅚⅛⅜⅝⅞]/g, m => {
-    const prev = s[s.indexOf(m) - 1]
-    return (prev && /\d/.test(prev) ? ' ' : '') + UNICODE_FRACTIONS[m]
-  })
-}
-
-const COOKING_FRACTIONS = [0, 1/8, 1/4, 1/3, 3/8, 1/2, 5/8, 2/3, 3/4, 7/8, 1]
-
-function snapToFraction(value: number): string {
-  if (value <= 0) return "0"
-  const whole = Math.floor(value)
-  const remainder = value - whole
-  // Find nearest cooking fraction for the remainder
-  const nearest = COOKING_FRACTIONS.reduce((a, b) =>
-    Math.abs(b - remainder) < Math.abs(a - remainder) ? b : a
-  )
-  const snapped = whole + nearest
-  if (snapped === Math.round(snapped)) return String(Math.round(snapped))
-  // Format as fraction string
-  const frac = new Fraction(snapped).simplify(0.01)
-  return frac.toFraction(true)
-}
-
-function scaleQuantity(quantityStr: string, scaleFactor: number): string {
-  const trimmed = quantityStr.trim()
-  if (!trimmed) return trimmed
-  try {
-    const parsed = new Fraction(normalizeQuantity(trimmed)).valueOf()
-    return snapToFraction(parsed * scaleFactor)
-  } catch {
-    return quantityStr
-  }
-}
-
-const TO_TASTE_RE = /^(to taste|as needed|a? ?pinch|a? ?dash|season to taste|q\.?s\.?)$/i
-
-function isToTaste(ing: IngredientLine): boolean {
-  return TO_TASTE_RE.test((ing.quantity ?? "").trim())
-}
-
-function shouldShowUnit(unit: string | null, ingredient: string | null): boolean {
-  if (!unit) return false
-  // Suppress unit when it echoes a word already in the ingredient name
-  // e.g. unit="tortillas" ingredient="corn or flour tortillas" → hide unit
-  const escaped = unit.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
-  return !new RegExp(`\\b${escaped}\\b`, 'i').test(ingredient ?? "")
-}
-
-function rescaleIngredients(
-  ingredients: IngredientLine[],
-  fromServings: number,
-  toServings: number
-): IngredientLine[] {
-  // Always run through scaleQuantity (factor=1 normalises "0.25" → "1/4" on initial display)
-  if (fromServings <= 0 || toServings <= 0) return ingredients
-  const linearFactor = toServings / fromServings
-  return ingredients.map(ing => {
-    if (isToTaste(ing)) return ing
-    const factor = isSubLinear(ing.ingredient ?? "") ? Math.sqrt(linearFactor) : linearFactor
-    return { ...ing, quantity: ing.quantity != null ? scaleQuantity(ing.quantity, factor) : null }
-  })
-}
-
-// A string is a section header if it ends with ":" and has no sentence-ending punctuation
-// before that colon (i.e. it's a label, not a step that happens to end with a colon).
+// A string is a section header if it ends with ":" and has no sentence-ending
+// punctuation before that colon (i.e. it's a label, not a step).
 function isSectionHeader(step: string): boolean {
   const t = step.trim()
   return t.endsWith(":") && !/[.!?]/.test(t.slice(0, -1))
@@ -131,12 +48,16 @@ function buildInstructionItems(instructions: string[]): InstructionItem[] {
   )
 }
 
-export function RecipeCard({ recipe, className }: Props) {
-  // currentServings starts at recipe.servings (already-scaled by backend at user's initial targetServings)
-  const [currentServings, setCurrentServings] = useState(recipe.servings)
+// ── Component ────────────────────────────────────────────────────────────────
 
-  // Rescale quantities client-side relative to backend-returned baseline (no new backend call)
-  const displayedIngredients = rescaleIngredients(recipe.ingredients, recipe.servings, currentServings)
+export function RecipeCard({ recipe, className, currentServings, onServingsChange }: Props) {
+  // Rescale quantities relative to the backend-returned baseline.
+  // factor=1 when unchanged — still normalises decimals ("0.25" → "1/4").
+  const displayedIngredients = rescaleIngredients(
+    recipe.ingredients,
+    recipe.servings,
+    currentServings,
+  )
 
   return (
     <Card className={cn("mx-auto", className)}>
@@ -150,18 +71,26 @@ export function RecipeCard({ recipe, className }: Props) {
             <ServingStepper
               value={currentServings}
               min={1}
-              onChange={v => setCurrentServings(v ?? recipe.servings)}
-              originalServings={recipe.originalServings !== recipe.servings ? recipe.originalServings : undefined}
+              onChange={v => onServingsChange(v ?? recipe.servings)}
+              originalServings={
+                recipe.originalServings !== recipe.servings
+                  ? recipe.originalServings
+                  : undefined
+              }
             />
           </div>
         </div>
       </CardHeader>
+
       <CardContent>
         <h3 className="font-veggieburger text-lg mb-2">Ingredients</h3>
         <ul className="list-disc pl-5 space-y-1 mb-2">
           {displayedIngredients.filter(ing => !isToTaste(ing)).map((ing, i) => (
             <li key={i}>
-              <span className="font-bold">{ing.quantity}{shouldShowUnit(ing.unit, ing.ingredient) ? ` ${ing.unit}` : ""}</span>{" "}
+              <span className="font-bold">
+                {ing.quantity}
+                {shouldShowUnit(ing.unit, ing.ingredient) ? ` ${ing.unit}` : ""}
+              </span>{" "}
               {ing.ingredient}
               {ing.preparation && `, ${ing.preparation}`}
               {ing.substitutionNote && ing.substitutionNote.length > 0 && (
@@ -170,9 +99,12 @@ export function RecipeCard({ recipe, className }: Props) {
             </li>
           ))}
         </ul>
+
         {displayedIngredients.some(isToTaste) && (
           <div className="mb-6">
-            <p className="font-veggieburger text-base text-muted-foreground mt-3 mb-1">To taste</p>
+            <p className="font-veggieburger text-base text-muted-foreground mt-3 mb-1">
+              To taste
+            </p>
             <ul className="list-disc pl-5 space-y-1">
               {displayedIngredients.filter(isToTaste).map((ing, i) => (
                 <li key={i}>
@@ -193,7 +125,9 @@ export function RecipeCard({ recipe, className }: Props) {
               </p>
             ) : (
               <div key={i} className="flex gap-2 leading-relaxed">
-                <span className="shrink-0 font-semibold text-muted-foreground w-5 text-right">{item.num}.</span>
+                <span className="shrink-0 font-semibold text-muted-foreground w-5 text-right">
+                  {item.num}.
+                </span>
                 <span>{item.text}</span>
               </div>
             )
