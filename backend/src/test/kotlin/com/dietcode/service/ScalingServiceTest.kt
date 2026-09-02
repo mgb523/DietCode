@@ -91,4 +91,123 @@ class ScalingServiceTest {
         val scaled = service.scale(r, 6)
         assertEquals(6, scaled.servings)
     }
+
+    // ── Spice / ¼-increment rounding ──────────────────────────────────────────
+
+    @Test
+    fun `formatQuantity with spiceRounding snaps 2_3 to nearest quarter`() {
+        // 2/3 ≈ 0.667 → nearest quarter = 3/4
+        assertEquals("3/4", service.formatQuantity(2.0 / 3.0, spiceRounding = true))
+    }
+
+    @Test
+    fun `formatQuantity with spiceRounding returns half for 0_5`() {
+        assertEquals("1/2", service.formatQuantity(0.5, spiceRounding = true))
+    }
+
+    @Test
+    fun `formatQuantity with spiceRounding returns whole for integer`() {
+        assertEquals("2", service.formatQuantity(2.0, spiceRounding = true))
+    }
+
+    @Test
+    fun `formatQuantity with spiceRounding returns mixed number`() {
+        // 1.333 → nearest quarter = 1 1/4
+        assertEquals("1 1/4", service.formatQuantity(4.0 / 3.0, spiceRounding = true))
+    }
+
+    @Test
+    fun `isSpiceMeasure true for tsp unit`() {
+        assertTrue(service.isSpiceMeasure("tsp", "paprika"))
+    }
+
+    @Test
+    fun `isSpiceMeasure true for tablespoon unit`() {
+        assertTrue(service.isSpiceMeasure("tablespoon", "olive oil"))
+    }
+
+    @Test
+    fun `isSpiceMeasure true for sublinear ingredient regardless of unit`() {
+        assertTrue(service.isSpiceMeasure("cup", "cinnamon"))
+    }
+
+    @Test
+    fun `isSpiceMeasure false for cup unit with non-spice ingredient`() {
+        assertFalse(service.isSpiceMeasure("cup", "flour"))
+    }
+
+    @Test
+    fun `scale rounds tsp ingredient to quarter increment`() {
+        // 1 tsp ingredient scaled from 2 → 3 servings gives factor 1.5 → 1.5 tsp → "1 1/2"
+        val r = recipe(
+            IngredientLine("1", "tsp", "paprika", null, null),
+            servings = 2
+        )
+        val scaled = service.scale(r, 3)
+        assertEquals("1 1/2", scaled.ingredients[0].quantity)
+    }
+
+    // ── Whole-unit rounding (garlic) ───────────────────────────────────────────
+
+    @Test
+    fun `isWholeUnit true for garlic`() {
+        assertTrue(service.isWholeUnit("garlic cloves"))
+        assertTrue(service.isWholeUnit("minced garlic"))
+        assertTrue(service.isWholeUnit("Garlic"))
+    }
+
+    @Test
+    fun `isWholeUnit false for non-garlic ingredients`() {
+        assertFalse(service.isWholeUnit("onion"))
+        assertFalse(service.isWholeUnit("flour"))
+    }
+
+    @Test
+    fun `scale ceils garlic to nearest whole clove`() {
+        // 3 cloves scaled from 4 → 3 servings: 3 * 0.75 = 2.25 → ceil = 3
+        val r = recipe(
+            IngredientLine("3", "", "garlic cloves", null, null),
+            servings = 4
+        )
+        val scaled = service.scale(r, 3)
+        assertEquals("3", scaled.ingredients[0].quantity)
+    }
+
+    @Test
+    fun `scale ceils garlic when result is fractional`() {
+        // 1 clove scaled from 2 → 3 servings: 1 * 1.5 = 1.5 → ceil = 2
+        val r = recipe(
+            IngredientLine("1", "", "garlic", null, null),
+            servings = 2
+        )
+        val scaled = service.scale(r, 3)
+        assertEquals("2", scaled.ingredients[0].quantity)
+    }
+
+    @Test
+    fun `scale never produces zero garlic — minimum 1`() {
+        // 1 clove scaled from 8 → 1 serving: 0.125 → ceil = 1
+        val r = recipe(
+            IngredientLine("1", "", "garlic cloves", null, null),
+            servings = 8
+        )
+        val scaled = service.scale(r, 1)
+        assertEquals("1", scaled.ingredients[0].quantity)
+    }
+
+    @Test
+    fun `scale rounds tsp ingredient and never produces 2_3`() {
+        // 1 tsp scaled from 3 → 2 servings: factor=2/3, result=2/3 tsp → rounded to 3/4
+        val r = recipe(
+            IngredientLine("1", "tsp", "oregano", null, null),
+            servings = 3
+        )
+        val scaled = service.scale(r, 2)
+        val qty = scaled.ingredients[0].quantity!!
+        // Must be a quarter-multiple, not 2/3
+        assertNotEquals("2/3", qty)
+        val value = service.parseQuantity(qty)!!
+        // 2/3 ≈ 0.667 → nearest quarter = 0.75; verify it's a multiple of 0.25
+        assertEquals(0.0, value.rem(0.25), 0.001)
+    }
 }
